@@ -4,6 +4,7 @@ public class Vector extends Point {
     public Vector(double x, double y, double z)
     {
         /**
+         * TODO
          * we have to cheack if it's ok to create the vector even if it's 0
          */
         super(x,y,z);
@@ -15,6 +16,7 @@ public class Vector extends Point {
     public Vector(final Double3 xyz){
         super(xyz);
         /**
+         * TODO
          * we have to cheack if it's ok to create the vector even if it's 0
          */
 
@@ -52,22 +54,20 @@ public class Vector extends Point {
         return (temp1.d1*temp2.d1 +temp1.d2*temp2.d2+temp1.d3*temp2.d3 );
 
     }
-    public double lenghtSquared()
-    {
+    public double lengthSquared() {
         return this.dotProduct(this);
     }
 
-    public double lenght()
-    {
-        return Math.sqrt(this.lenghtSquared());
+    public double length() {
+        return Math.sqrt(this.lengthSquared());
     }
 
     public Vector normalize()
     {
         Double3 temp=this.xyz;
-        double x = temp.d1/this.lenght();
-        double y = temp.d2/this.lenght();
-        double z = temp.d3/this.lenght();
+        double x = temp.d1/this.length();
+        double y = temp.d2/this.length();
+        double z = temp.d3/this.length();
         return new Vector(x,y,z);
     }
     @Override
@@ -83,5 +83,7 @@ public class Vector extends Point {
         if (!(o instanceof Vector vector)) return false;
         return xyz.equals(vector.xyz);
     }
+
+
 
 }

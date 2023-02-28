@@ -14,7 +14,20 @@ public class Sphere extends RadialGeometry {
     {
         return null;
     }
-    /**
-     * finish ...
-     */
+
+    public Point getCenter() {
+        /**
+         * TODO
+         * return no copy but value !!
+         * check it out
+         */
+        return center;
+    }
+
+    @Override
+    public String toString() {
+        return "Sphere{" +
+                "center=" + center + ' ' + super.toString() +
+                '}';
+    }
 }

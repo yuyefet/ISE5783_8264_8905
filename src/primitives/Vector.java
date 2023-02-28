@@ -22,4 +22,66 @@ public class Vector extends Point {
         if(xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("Vector 0 is illegal");
     }
+
+    public Vector add(Vector vec)
+    {
+        Double3 temp = this.xyz.add(vec.xyz);
+        return new Vector(temp);
+    }
+
+    public Vector scale(double scalar)
+    {
+        return new Vector(this.xyz.scale(scalar));
+    }
+
+    public Vector crossProduct(Vector vec)
+    {
+        Double3 temp1 = this.xyz;
+        Double3 temp2 = vec.xyz;
+        double x = temp1.d2*temp2.d3- temp1.d3* temp2.d2;
+        double y = -(temp1.d1* temp2.d3-temp1.d3*temp2.d1);
+        double z = temp1.d1* temp2.d2-temp1.d2*temp2.d1;
+        return new Vector(x,y,z);
+
+    }
+
+    public double dotProduct(Vector vec)
+    {
+        Double3 temp1=this.xyz;
+        Double3 temp2=vec.xyz;
+        return (temp1.d1*temp2.d1 +temp1.d2*temp2.d2+temp1.d3*temp2.d3 );
+
+    }
+    public double lenghtSquared()
+    {
+        return this.dotProduct(this);
+    }
+
+    public double lenght()
+    {
+        return Math.sqrt(this.lenghtSquared());
+    }
+
+    public Vector normalize()
+    {
+        Double3 temp=this.xyz;
+        double x = temp.d1/this.lenght();
+        double y = temp.d2/this.lenght();
+        double z = temp.d3/this.lenght();
+        return new Vector(x,y,z);
+    }
+    @Override
+    public String toString() {
+        return "Vector{" +
+                "xyz=" + xyz +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vector vector)) return false;
+        return xyz.equals(vector.xyz);
+    }
+
 }

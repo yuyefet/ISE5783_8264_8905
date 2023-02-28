@@ -9,6 +9,24 @@ public class Point {
         this.xyz = new Double3(x,y,z);
     }
 
+    public Point add(Vector vec)
+    {
+        /**
+         * we have to check this
+         */
+        Double3 temp = this.xyz.add(vec.xyz);
+        return new Point(temp.d1,temp.d2,temp.d3);
+    }
+
+    public Vector substract(Point point)
+    {
+        /**
+         * we have to check this
+         */
+        Double3 temp = this.xyz.subtract(point.xyz);
+        return new Vector(temp.d1,temp.d2,temp.d3);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -31,6 +49,8 @@ public class Point {
     }
 
     private double distanceSquared(Point point) {
-        return ((point.xyz.d1 -xyz.d1));
+        Double3 temp = point.xyz;
+        Double3 temp2 = this.xyz;
+        return ((temp.d1 -temp2.d1)*(temp.d1 -temp2.d1)+(temp.d2 -temp2.d2)*(temp.d2 -temp2.d2)+(temp.d3 -temp2.d3)*(temp.d3 -temp2.d3));
     }
 }

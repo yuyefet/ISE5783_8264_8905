@@ -6,9 +6,13 @@ public class Point {
     final Double3 xyz;
     public static final Point ZERO = new Point(0,0,0);
     public Point(double x, double y, double z) {
+
         this.xyz = new Double3(x,y,z);
     }
 
+    public Point(final Double3 xyz){
+        this.xyz = xyz;
+    }
     public Point add(Vector vec)
     {
         /**

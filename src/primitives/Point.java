@@ -2,23 +2,39 @@ package primitives;
 
 import java.util.Objects;
 
+/**
+ * Point - represents a point in the dimension
+ */
 public class Point {
     final Double3 xyz;
     public static final Point ZERO = new Point(0,0,0);
+
+    /**
+     * ctor for point
+     * gets 3 double params
+     * @param x x value of the point
+     * @param y y value of the point
+     * @param z z value of the point
+     */
     public Point(double x, double y, double z) {
 
         this.xyz = new Double3(x,y,z);
     }
 
+    /**
+     * ctor for point by immutable parameter of Double3 Type
+     * @param xyz
+     */
     public Point(final Double3 xyz){
         this.xyz = xyz;
     }
-    public Point add(Vector vec)
-    {
-        /**
-         * TODO
-         * we have to check this
-         */
+
+    /**
+     * adding Vector to the current point and returns a new updated point
+     * @param vec vector to add to point
+     * @return new updated point
+     */
+    public Point add(Vector vec) {
         Double3 temp = this.xyz.add(vec.xyz);
         return new Point(temp.d1,temp.d2,temp.d3);
     }
@@ -42,21 +58,35 @@ public class Point {
         return "Point: " + xyz;
     }
 
-    public double distance(Point point){
+    /**
+     * calculates the distance between the current point and the point received by parameter
+     * @param point - point to calculate distance from
+     * @return the distance between the current point and the point received by parameter
+     */
+    public double distance(Point point) {
         return Math.sqrt(distanceSquared(point));
     }
 
+    /**
+     * distanceSquared calculation
+     * @param point - point to calculate distance from
+     * @return the pow of the distance between the current point and the point received by parameter
+     */
     private double distanceSquared(Point point) {
         Double3 temp = point.xyz;
         Double3 temp2 = this.xyz;
+        /**
+         * x*x + y*y + z*z
+         */
         return ((temp.d1 -temp2.d1)*(temp.d1 -temp2.d1)+(temp.d2 -temp2.d2)*(temp.d2 -temp2.d2)+(temp.d3 -temp2.d3)*(temp.d3 -temp2.d3));
     }
 
+    /**
+     * Vector subtraction
+     * @param point - receives a second point in the parameter to substract with
+     * @return a vector from the second point to the point on which the subtraction is performed the action
+     */
     public Vector subtract(Point point) {
-        /**
-         * TODO
-         * we have to check this
-         */
         Double3 temp = this.xyz.subtract(point.xyz);
         return new Vector(temp.d1,temp.d2,temp.d3);
     }

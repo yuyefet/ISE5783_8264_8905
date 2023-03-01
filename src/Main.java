@@ -5,7 +5,9 @@ import primitives.Point;
 import primitives.Vector;
 
 /** Test program for the 1st stage
- * @author Dan Zilberstein */
+ *  @authors Jeremie Tordjman 1828264 and Yuval Yefet 213938905
+ *  mails: Jeremie: jeremiet3@gmail.com  Yuval: yuvaly2003@gmail.com
+ */
 public final class Main {
 
    /** Main program to tests initial functionality of the 1st stage

@@ -3,14 +3,28 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-public class Tube extends RadialGeometry {
+/**
+ * Tube Class
+ */
 
+public class Tube extends RadialGeometry {
+    /** axisRay (line with direction) */
     protected Ray axisRay;
+
+    /**
+     * Tube's Constructor
+     * @param radius double's type
+     * @param ray Ray's type
+     */
     public Tube(double radius,Ray ray) {
         super(radius);
         this.axisRay=ray;
     }
 
+    /**
+     * getter of axisRay (Tube's field)
+     * @return axisRay
+     */
     public Ray getAxisRay() {
         return axisRay;
     }
@@ -23,8 +37,7 @@ public class Tube extends RadialGeometry {
     }
 
     @Override
-    public Vector getNormal(Point point)
-    {
+    public Vector getNormal(Point point) {
         return null;
     }
 

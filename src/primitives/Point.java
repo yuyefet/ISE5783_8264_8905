@@ -72,7 +72,7 @@ public class Point {
      * @param point - point to calculate distance from
      * @return the pow of the distance between the current point and the point received by parameter
      */
-    private double distanceSquared(Point point) {
+    public double distanceSquared(Point point) {
         Double3 temp = point.xyz;
         Double3 temp2 = this.xyz;
         /**

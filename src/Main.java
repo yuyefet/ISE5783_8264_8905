@@ -4,7 +4,7 @@ import static primitives.Util.isZero;
 import primitives.Point;
 import primitives.Vector;
 
-/** Test program for the 1st stage
+/** Test program for the 1st stage :
  *  @authors Jeremie Tordjman 1828264 and Yuval Yefet 213938905
  *  mails: Jeremie: jeremiet3@gmail.com  Yuval: yuvaly2003@gmail.com
  */

@@ -12,21 +12,19 @@ class SphereTest {
     public void testConstructor() {
         // ============ Equivalence Partitions Test ==============
         try {
-            new Sphere(new Point(0, 0, 1), new Point(2, 0, 0), new Point(0, 4, 0));
+            new Sphere(2,new Point(1,1,1));
         } catch (IllegalArgumentException e) {
-            fail("Failed constructing a correct Plane");
+            fail("Failed constructing a correct Sphere");
         }
     }
+
+    /** Test method for {@link geometries.Sphere#getNormal(Point)}. */
     @Test
     void getNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: All the points are the same
         // Create a plane with equal points
-        final Plane plane = new Plane(new Point(0, 0, 1), new Point(2, 0, 0), new Point(0, 4, 0));
-        assertEquals(new Vector(4, 2, 8).normalize(), plane.getNormal(), "The normal of the plane is not normalized");
-    }
-    @Test
-    void getNormal() {
-
+        final Sphere sphere = new Sphere(2,new Point(1,1,1));
+        assertEquals(new Vector(2, 0,0 ).normalize(), sphere.getNormal(new Point(3,1,1)), "The normal of the sphere is not normalized");
     }
 }

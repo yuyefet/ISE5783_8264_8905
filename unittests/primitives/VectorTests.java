@@ -35,26 +35,12 @@ class VectorTests {
                 () -> new Vector(1, 2, 3).subtract(new Vector(1, 2, 3)), "Subtract v from v must throw exception");
     }
 
-  /**
-   * Test method for {@link primitives.Point#subtract(primitives.Point)}.
-   */
-    @Test
-    public void testPointSubtract() {
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: Simple test
-        assertEquals(new Vector(1, 1, 1), new Point(2, 3, 4).subtract(new Point(1, 2, 3)), "Wrong point subtract");
-
-        // =============== Boundary Values Tests ==================
-        // TC11: test subtracting same point
-        assertThrows(IllegalArgumentException.class,
-                () -> new Point(1, 2, 3).subtract(new Point(1, 2, 3)), "Subtract P from P must throw exception");
-    }
 
   /**
    * Test method for {@link primitives.Vector#scale(double)}.
    */
     @Test
-    public void testScale() {
+    public void testScaling() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Simple test
         assertEquals(new Vector(2, 4, 6), new Vector(1, 2, 3).scale(2), "Wrong vector scale");

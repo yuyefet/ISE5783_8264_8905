@@ -5,6 +5,7 @@ import primitives.Vector;
 
 /**
  * Tube Class
+ * Tube (infinite cylinder)
  */
 
 public class Tube extends RadialGeometry {

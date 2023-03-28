@@ -26,7 +26,7 @@ class PlaneTests {
                         "Error in ctr when two points are the same");
 
         assertThrows(IllegalArgumentException.class,
-                () -> new Plane(new Point(1,2,3), new Point(2,4,6), new Point(-1,-2,-6)), //
+                () -> new Plane(new Point(1,2,3), new Point(2,4,6), new Point(-1,-2,-3)), //
                 "Error in ctr when all the points are on the same line");
     }
 

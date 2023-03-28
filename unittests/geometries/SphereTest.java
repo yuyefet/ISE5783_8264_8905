@@ -1,20 +1,18 @@
 package geometries;
 
 import org.junit.jupiter.api.Test;
-import primitives.Double3;
 import primitives.Point;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PlaneTests {
-
-    /** Test method for {@link geometries.Plane#Plane(Point p1,Point p2,Point p3)}. */
+class SphereTest {
+    /** Test method for {@link geometries.Sphere#Sphere(double radius,Point center)}. */
     @Test
     public void testConstructor() {
         // ============ Equivalence Partitions Test ==============
         try {
-            new Plane(new Point(0, 0, 1), new Point(2, 0, 0), new Point(0, 4, 0));
+            new Sphere(new Point(0, 0, 1), new Point(2, 0, 0), new Point(0, 4, 0));
         } catch (IllegalArgumentException e) {
             fail("Failed constructing a correct Plane");
         }
@@ -26,5 +24,9 @@ class PlaneTests {
         // Create a plane with equal points
         final Plane plane = new Plane(new Point(0, 0, 1), new Point(2, 0, 0), new Point(0, 4, 0));
         assertEquals(new Vector(4, 2, 8).normalize(), plane.getNormal(), "The normal of the plane is not normalized");
+    }
+    @Test
+    void getNormal() {
+
     }
 }

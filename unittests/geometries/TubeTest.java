@@ -25,17 +25,18 @@ class TubeTest {
     void getNormal() {
         // ============ Equivalence Partitions Test ==============
         // TC01 : All the points are the same
-        final Tube tube = new Tube(2,new Ray(new Point(1,2,3),new Vector(1,2,1)));
-        Point o = new Point(2,4,4);
-        Point pEP= new Point(0,4,4);
-        Vector expected1 = new Vector(-2,0,0).normalize();
+        final Tube tube = new Tube(2,new Ray(new Point(0,0,0),new Vector(0,0,1)));
+
+        Point o = new Point(0,0,1);
+        Point pEP= new Point(0,2,1);
+        Vector expected1 = new Vector(0,2,0).normalize();
         assertEquals(expected1,tube.getNormal(pEP),"EP : Wrong result of normal in tube");
 
         // =============== Boundary Values Tests ==================
         // TC11: when (P-P0) is orthogonal to the vector
-        Point pBVA = new Point(1,0,3);
-        Vector expected2= new Vector(0,-2,0);
-        assertEquals(expected2,tube.getNormal(pBVA),"BVA : Wrong result of normal in tube");
+        Point pBVA = new Point(0,2,0);
+        Vector expected2= new Vector(0,2,0).normalize();
+        assertThrows(IllegalArgumentException.class,()->tube.getNormal(pBVA).normalize(),"Vector 0 created !");
 
     }
 }

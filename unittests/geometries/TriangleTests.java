@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TriangleTests {
-    /** Test method for {@link geometries.Triangle#Triangle(Point... vertices)}. */
 
+    /** Test method for {@link geometries.Triangle#getNormal(Point)}. */
     @Test
     public void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============

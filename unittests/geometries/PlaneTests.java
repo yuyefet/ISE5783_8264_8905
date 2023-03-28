@@ -13,12 +13,25 @@ class PlaneTests {
     @Test
     public void testConstructor() {
         // ============ Equivalence Partitions Test ==============
+        // TC01: All the points are the same
+
         try {
             new Plane(new Point(0, 0, 1), new Point(2, 0, 0), new Point(0, 4, 0));
         } catch (IllegalArgumentException e) {
             fail("Failed constructing a correct Plane");
         }
+        //BVA
+        assertThrows(IllegalArgumentException.class,
+                () -> new Plane(new Point(1,2,3), new Point(1,2,3), new Point(1,2,6)), //
+                        "Error in ctr when two points are the same");
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new Plane(new Point(1,2,3), new Point(2,4,6), new Point(-1,-2,-6)), //
+                "Error in ctr when all the points are on the same line");
     }
+
+    /** Test method for {@link Plane#getNormal()}. */
+
     @Test
     void getNormal() {
         // ============ Equivalence Partitions Tests ==============

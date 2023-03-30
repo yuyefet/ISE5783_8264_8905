@@ -28,37 +28,41 @@ class CylinderTests {
         // TC01 : on the round surface
         final Cylinder cylinder = new Cylinder(2,new Ray(new Point(0,0,0),new Vector(0,0,1)),2);
 
+        Point o = new Point(0,0,1);
         Point pEP= new Point(0,2,1);
-        Vector expected1 = new Vector(-2,0,0).normalize();
-        assertEquals(expected1,cylinder.getNormal(pEP),"EP TC01 : Wrong result of normal in cylinder");
+        Vector expected1 = new Vector(0,2,0).normalize();
+        assertEquals(expected1,cylinder.getNormal(pEP),"EP TC01 : Wrong result of normal in Cylinder");
 
         // TC02 : On the lower base
         pEP = new Point(1,1,0);
-        expected1 = new Vector(-1,1,0);
+        expected1 = new Vector(0,0,1);
         assertEquals(expected1.normalize(),cylinder.getNormal(pEP),"EP TC02: Wrong result of normal in cylinder");
 
         // TC03 : On the upper base
-        pEP = new Point(1,1,2);
-        expected1 = new Vector(0,-1,-1);
-       // assertEquals(expected1.normalize(),cylinder.getNormal(pEP),"EP TC03 : Wrong result of normal in cylinder");
+        pEP = new Point(0,1,2);
+        expected1 = new Vector(0,0,1);
+        assertEquals(expected1.normalize(),cylinder.getNormal(pEP),"EP TC03 : Wrong result of normal in cylinder");
 
         // =============== Boundary Values Tests ==================
         // TC11 : on the lower base edge
         Point pBVA = new Point(0,2,0);
-        expected1 = new Vector(-2,0,0);
+        expected1 = new Vector(0,0,2);
         assertEquals(expected1.normalize(),cylinder.getNormal(pBVA),"EP TC11 : Wrong result of normal in cylinder");
 
         // TC12 : on the upper base edge
         pBVA = new Point(0,2,2);
-        expected1 = new Vector(2,-2,0);
+        expected1 = new Vector(0,0,2);
         assertEquals(expected1.normalize(),cylinder.getNormal(pBVA),"EP TC12 : Wrong result of normal in cylinder");
 
         // TC13 : on the lower base center
-        assertThrows(IllegalArgumentException.class,()->cylinder.getNormal(new Point(0,0,0)),"EP TC13 : Wrong result of normal in cylinder");
+        pBVA = new Point(0,0,0);
+        expected1 = new Vector(0,0,1);
+        assertEquals(expected1.normalize(),cylinder.getNormal(pBVA),"EP TC13: Wrong result of normal in cylinder");
 
-        // TC14 : on the lower base edge
+
+        // TC14 : on the upper base center
         pBVA = new Point(0,0,2);
-        expected1 = new Vector(0,-2,0);
+        expected1 = new Vector(0,0,2);
         assertEquals(expected1.normalize(),cylinder.getNormal(pBVA),"EP TC14 : Wrong result of normal in cylinder");
     }
 }

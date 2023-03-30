@@ -36,7 +36,7 @@ class TubeTest {
         // TC11: when (P-P0) is orthogonal to the vector
         Point pBVA = new Point(0,2,0);
         Vector expected2= new Vector(0,2,0).normalize();
-        assertThrows(IllegalArgumentException.class,()->tube.getNormal(pBVA).normalize(),"Vector 0 created !");
+        assertEquals(expected2,tube.getNormal(pBVA),"BVA : Wrong result of normal in tube");
 
     }
 }

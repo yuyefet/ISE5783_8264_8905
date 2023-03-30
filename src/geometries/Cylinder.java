@@ -40,9 +40,17 @@ public class Cylinder extends Tube {
 
     @Override
     public Vector getNormal(Point point) {
-        Point C= this.axisRay.getP0();
-        Vector dir = this.axisRay.getDir();
-        Vector normal = (point.subtract(C)).crossProduct(dir);
-        return normal.normalize().scale(-1);
+
+        if(this.axisRay.getP0().equals(point))
+            return this.axisRay.getDir().normalize();
+
+        double t= this.axisRay.getDir().dotProduct(point.subtract(this.axisRay.getP0()));
+        if(t==0)
+            return  this.axisRay.getDir().normalize();
+        if (t==this.height)
+            return this.axisRay.getDir();
+        Point o = this.axisRay.getP0().add(this.axisRay.getDir().scale(t));
+        Vector normal = point.subtract(o).normalize();
+        return normal;
     }
 }

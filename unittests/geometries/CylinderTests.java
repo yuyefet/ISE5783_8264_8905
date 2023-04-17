@@ -35,8 +35,7 @@ class CylinderTests {
 
         // TC02 : On the lower base
         pEP = new Point(1,1,0);
-        expected1 = new Vector(0,0,1);
-        assertEquals(expected1.normalize(),cylinder.getNormal(pEP),"EP TC02: Wrong result of normal in cylinder");
+        assertEquals(new Vector(0,0,1).normalize(),cylinder.getNormal(pEP),"EP TC02: Wrong result of normal in cylinder");
 
         // TC03 : On the upper base
         pEP = new Point(0,1,2);

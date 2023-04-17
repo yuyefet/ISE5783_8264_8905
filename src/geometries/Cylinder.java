@@ -1,4 +1,5 @@
 package geometries;
+import primitives.Util;
 import primitives.Vector;
 import primitives.Point;
 import primitives.Ray;
@@ -40,17 +41,39 @@ public class Cylinder extends Tube {
 
     @Override
     public Vector getNormal(Point point) {
+        Point p0 = this.axisRay.getP0();
+        Vector dir = this.axisRay.getDir();
 
-        if(this.axisRay.getP0().equals(point))
-            return this.axisRay.getDir().normalize();
+        if(p0.equals(point))
+            return dir.normalize();
 
-        double t= this.axisRay.getDir().dotProduct(point.subtract(this.axisRay.getP0()));
-        if(t==0)
-            return  this.axisRay.getDir().normalize();
-        if (t==this.height)
-            return this.axisRay.getDir();
-        Point o = this.axisRay.getP0().add(this.axisRay.getDir().scale(t));
-        Vector normal = point.subtract(o).normalize();
+        Vector sub;
+        double t;
+
+        try{
+            sub = point.subtract(p0);
+            t = Util.alignZero(dir.dotProduct(sub));
+        }
+        catch(IllegalArgumentException ex){
+            return null;
+        }
+
+        if(Util.isZero(t))
+            return  dir.normalize();
+
+        if (Util.isZero(t - this.height))
+            return dir;
+
+        Point o;
+        Vector normal;
+        try{
+            o = p0.add(dir.scale(t));
+            normal = point.subtract(o).normalize();
+        }
+        catch(IllegalArgumentException ex){
+            return null;
+        }
+
         return normal;
     }
 }

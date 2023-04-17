@@ -1,6 +1,7 @@
 package geometries;
 import primitives.Point;
 import primitives.Ray;
+import primitives.Util;
 import primitives.Vector;
 
 /**
@@ -39,11 +40,32 @@ public class Tube extends RadialGeometry {
 
     @Override
     public Vector getNormal(Point point) {
-        double t = this.axisRay.getDir().dotProduct(point.subtract(this.axisRay.getP0()));
-        if(t==0)
-            return point.subtract(this.axisRay.getP0()).normalize();
-        Point o = this.axisRay.getP0().add(this.axisRay.getDir().scale(t));
-        Vector normal = point.subtract(o).normalize();
+
+        double t;
+        Point p0 = this.axisRay.getP0();
+        Vector sub;
+        Vector dir = this.axisRay.getDir();
+        try{
+            sub = point.subtract(p0);
+            t = Util.alignZero(dir.dotProduct(sub));
+        }
+        catch(IllegalArgumentException ex){
+            return null;
+        }
+
+
+        if(Util.isZero(t))
+            return sub.normalize();
+
+        Point o = p0.add(dir.scale(t));
+        Vector normal;
+        try{
+            normal = point.subtract(o).normalize();
+        }
+        catch(IllegalArgumentException ex)
+        {
+            return null;
+        }
         return normal;
     }
 

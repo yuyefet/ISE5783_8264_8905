@@ -22,10 +22,20 @@ public class Plane implements Geometry {
      */
     public Plane(Point p1, Point p2, Point p3) {
         this.q0 = p1;
+        Vector v1;
+        Vector v2;
+        Vector tmp;
 
-        Vector v1 = p2.subtract(p1);
-        Vector v2 = p3.subtract(p2);
-        this.normal = v1.crossProduct(v2).normalize();
+        try{
+            v1 = p2.subtract(p1);
+            v2 = p3.subtract(p2);
+            tmp = v1.crossProduct(v2);
+        }
+        catch(IllegalArgumentException ex){
+            throw ex;
+        }
+
+        this.normal = tmp.normalize();
 
     }
 

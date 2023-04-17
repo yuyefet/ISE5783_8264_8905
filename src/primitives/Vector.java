@@ -104,7 +104,17 @@ public class Vector extends Point {
         double x = temp.d1/this.length();
         double y = temp.d2/this.length();
         double z = temp.d3/this.length();
-        return new Vector(x,y,z);
+
+        Vector vec;
+        try{
+            vec = new Vector(x,y,z);
+        }
+        catch(IllegalArgumentException ex)
+        {
+            return null;
+        }
+
+        return vec;
     }
     @Override
     public String toString() {

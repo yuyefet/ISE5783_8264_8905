@@ -90,4 +90,8 @@ public class Point {
         Double3 temp = this.xyz.subtract(point.xyz);
         return new Vector(temp.d1,temp.d2,temp.d3);
     }
+
+    public Double3 getXyz() {
+        return xyz;
+    }
 }

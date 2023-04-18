@@ -56,7 +56,7 @@ class PlaneTests {
         // ============ Equivalence Partitions Tests ==============
         //The Ray must be neither orthogonal nor parallel to the plane
         // TC01: Ray intersects the plane
-        intersect1 = new Point(-0.33,1,0);
+        intersect1 = new Point(-0.33333333333333337,1,0);
         assertEquals(List.of(intersect1), plane.findIntersections(new Ray(new Point(0,0.5,0), new Vector(-1,1.5,0))), "There is an intersection!");
 
         //TC02: Ray does not intersect the plane
@@ -72,17 +72,22 @@ class PlaneTests {
 
         // **** Group: Ray is orthogonal to the plane
         //TC13: before plane
-        intersect1 = new Point(0.36,1,0);
+        intersect1 = new Point(0.36333333333333334,1,0);
         assertEquals(List.of(intersect1), plane.findIntersections(new Ray(new Point(0.36,0.51,0), new Vector(0.01,1.47,0))), "There is an intersection!");
 
         //TC14: in plane
+        assertNull(plane.findIntersections(new Ray(new Point(0.5,1,0), new Vector(0,1,0)))," There are no intersections");
 
-        //TC15: apter plane
+        //TC15: after plane
+        assertNull(plane.findIntersections(new Ray(new Point(-0.5,2,0), new Vector(0,0.5,0)))," There are no intersections");
 
+        //TC16: Ray is neither orthogonal nor parallel to and begins at the plane
+        //(p0 is in the plane, but not the ray)
+        assertNull(plane.findIntersections(new Ray(new Point(0.5,1,0), new Vector(-1.5,1,0)))," There are no intersections");
 
-
-
-
+        //TC17: Ray is neither orthogonal nor parallel to the plane and begins in
+        //the same point which appears as reference point in the plane (Q)
+        assertNull(plane.findIntersections(new Ray(new Point(0,1,0), new Vector(-0.5,1,0)))," There are no intersections");
 
     }
 }

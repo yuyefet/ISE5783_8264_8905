@@ -3,7 +3,10 @@ package geometries;
 import org.junit.jupiter.api.Test;
 import primitives.Double3;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,5 +44,45 @@ class PlaneTests {
         // TC01: All the points are the same
         final Plane plane = new Plane(new Point(0, 0, 1), new Point(2, 0, 0), new Point(0, 4, 0));
         assertEquals(new Vector(4, 2, 8).normalize(), plane.getNormal(), "The normal of the plane is not normalized");
+    }
+
+
+    @Test
+    void testFindIntersections() {
+        Plane plane = new Plane(new Point(0,1,0), new Point(1,1,0), new Point(0,1,1));
+        Point intersect1;
+        List<Point> result;
+
+        // ============ Equivalence Partitions Tests ==============
+        //The Ray must be neither orthogonal nor parallel to the plane
+        // TC01: Ray intersects the plane
+        intersect1 = new Point(-0.33,1,0);
+        assertEquals(List.of(intersect1), plane.findIntersections(new Ray(new Point(0,0.5,0), new Vector(-1,1.5,0))), "There is an intersection!");
+
+        //TC02: Ray does not intersect the plane
+        assertNull(plane.findIntersections(new Ray(new Point(0,0.5,0), new Vector(-1,-1.5,0))),"Ray line out of plane");
+
+        //============ BVA ============
+        // **** Group: Ray is parallel to the plane
+        //TC11: the ray included in the plane
+        assertNull(plane.findIntersections(new Ray(new Point(0,1,0), new Vector(-1,0,0))),"Ray is not parallel to the plane");
+
+        //TC12: the ray not included in the plane
+        assertNull(plane.findIntersections(new Ray(new Point(0,0,0), new Vector(-1,0,0))),"Ray is not parallel to the plane");
+
+        // **** Group: Ray is orthogonal to the plane
+        //TC13: before plane
+        intersect1 = new Point(0.36,1,0);
+        assertEquals(List.of(intersect1), plane.findIntersections(new Ray(new Point(0.36,0.51,0), new Vector(0.01,1.47,0))), "There is an intersection!");
+
+        //TC14: in plane
+
+        //TC15: apter plane
+
+
+
+
+
+
     }
 }

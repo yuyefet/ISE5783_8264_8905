@@ -7,7 +7,7 @@ import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 //Tube (infinite cylinder)
-class TubeTest {
+class TubeTests {
     /** Test method for {@link geometries.Tube#Tube(double radius, Ray ray)}. */
     @Test
     public void testConstructor() {

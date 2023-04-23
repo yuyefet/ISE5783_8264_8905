@@ -57,7 +57,9 @@ class PlaneTests {
         //The Ray must be neither orthogonal nor parallel to the plane
         // TC01: Ray intersects the plane
         intersect1 = new Point(-0.33333333333333337,1,0);
-        assertEquals(List.of(intersect1), plane.findIntersections(new Ray(new Point(0,0.5,0), new Vector(-1,1.5,0))), "There is an intersection!");
+        result = plane.findIntersections(new Ray(new Point(0,0.5,0), new Vector(-1,1.5,0)));
+        assertEquals(1, result.size(),"Wrong number of points");
+        assertEquals(List.of(intersect1), result, "There is an intersection!");
 
         //TC02: Ray does not intersect the plane
         assertNull(plane.findIntersections(new Ray(new Point(0,0.5,0), new Vector(-1,-1.5,0))),"Ray line out of plane");
@@ -73,7 +75,9 @@ class PlaneTests {
         // **** Group: Ray is orthogonal to the plane
         //TC13: before plane
         intersect1 = new Point(0.36333333333333334,1,0);
-        assertEquals(List.of(intersect1), plane.findIntersections(new Ray(new Point(0.36,0.51,0), new Vector(0.01,1.47,0))), "There is an intersection!");
+        result = plane.findIntersections(new Ray(new Point(0.36,0.51,0), new Vector(0.01,1.47,0)));
+        assertEquals(1, result.size(),"Wrong number of points");
+        assertEquals(List.of(intersect1), result, "There is an intersection!");
 
         //TC14: in plane
         assertNull(plane.findIntersections(new Ray(new Point(0.5,1,0), new Vector(0,1,0)))," There are no intersections");

@@ -75,8 +75,7 @@ public class Sphere extends RadialGeometry {
 
 
         if (t1 > 0 && t2 > 0) {
-
-
+            
             Point P1 = p0.add(v.scale(t1));
 
             Point P2 = p0.add(v.scale(t2));

@@ -21,6 +21,10 @@ public class Triangle extends Polygon {
     public List<Point> findIntersections(Ray ray){
 
         List<Point> list = this.plane.findIntersections(ray);
+
+        if(list == null)
+            return null;
+
         Vector v1,v2,v3;
         Vector n1,n2,n3;
         Vector v=ray.getDir();

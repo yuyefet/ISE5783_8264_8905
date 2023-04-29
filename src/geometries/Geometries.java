@@ -21,9 +21,8 @@ public class Geometries implements Intersectable{
 
     public void add(Intersectable ... geometries){
         for(Intersectable geo : geometries)
-        {
             intersections.add(geo);
-        }
+
     }
 
     @Override

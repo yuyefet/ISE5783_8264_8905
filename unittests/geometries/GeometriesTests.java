@@ -9,14 +9,15 @@ class GeometriesTests {
 
     @Test
     void findIntersections() {
-        //TODO where is the geometries ?
-        Geometries[] geometries = {};
         // ********** BVA *************
         // Empty collection of geometries
+        Geometries geometries= new Geometries(new Sphere(2,new Point(1,1,1)),new Plane());
 
 
         // ********** BVA *************
         // No intersections
+
+
 
     }
 }

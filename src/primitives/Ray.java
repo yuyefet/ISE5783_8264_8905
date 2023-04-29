@@ -40,4 +40,9 @@ public class Ray {
     public Vector getDir() {
         return dir;
     }
+
+    public Point GetPoint(double t){
+        Vector vec = this.dir.scale(t);
+        return this.p0.add(vec);
+    }
 }

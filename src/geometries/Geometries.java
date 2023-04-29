@@ -30,19 +30,23 @@ public class Geometries implements Intersectable{
     public List<Point> findIntersections(Ray ray) {
 
         List<Point> points = null;
-        List<Point> temp;
+        List<Point> hasIntersections = null;
 
         for (Intersectable geo: intersections) {
-            temp = geo.findIntersections(ray);
-            if(temp != null) {
-                if(points == null) {
-                    points = new ArrayList<>(temp);
-                } else {
-                    points.addAll(temp);
-                }
+
+            hasIntersections = geo.findIntersections(ray);
+
+            if(hasIntersections != null)
+            {
+                //it means that there are intersections
+                if(points == null)
+                    points = new ArrayList<>(hasIntersections);
+
+                else
+                    points.addAll(hasIntersections);
             }
         }
 
-        return points;
+        return points; //return null in case of 0 intersections
     }
 }

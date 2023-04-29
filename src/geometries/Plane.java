@@ -110,7 +110,7 @@ public class Plane implements Geometry {
             return null;
         }
 
-        Point result = p0.add(v.scale(t));
+        Point result = ray.GetPoint(t);
         return List.of(result);
 
     }

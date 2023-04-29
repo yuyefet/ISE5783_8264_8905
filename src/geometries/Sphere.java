@@ -76,15 +76,15 @@ public class Sphere extends RadialGeometry {
 
         if (t1 > 0 && t2 > 0) {
             
-            Point P1 = p0.add(v.scale(t1));
+            Point P1 = ray.GetPoint(t1);
 
-            Point P2 = p0.add(v.scale(t2));
+            Point P2 = ray.GetPoint(t2);
 
             return List.of(P1, P2);
         }
 
         if (t1 > 0) {
-            Point P1 = p0.add(v.scale(t1));
+            Point P1 = ray.GetPoint(t1);
 
             return List.of(P1);
         }
@@ -92,7 +92,7 @@ public class Sphere extends RadialGeometry {
 
         if (t2 > 0) {
 
-            Point P2 = p0.add(v.scale(t2));
+            Point P2 = ray.GetPoint(t2);
 
             return List.of(P2);
         }

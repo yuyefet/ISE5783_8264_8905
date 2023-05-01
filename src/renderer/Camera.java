@@ -1,9 +1,13 @@
 package renderer;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Util;
 import primitives.Vector;
 
+/***
+ * Camera class with represented by position (Point), three vectors and the ViewPlane.
+ */
 public class Camera {
     private Point position;
     private Vector v_right, v_up, v_to;
@@ -83,6 +87,18 @@ public class Camera {
 
     public double getDistance() {
         return distance;
+    }
+
+    /***
+     * Construct Ray method
+     * @param nX according to width
+     * @param nY according to height
+     * @param j according to width
+     * @param i according to height
+     * @return
+     */
+    public Ray constructRay(int nX, int nY, int j, int i){
+        return null;
     }
 
 

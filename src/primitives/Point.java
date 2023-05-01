@@ -88,10 +88,20 @@ public class Point {
      */
     public Vector subtract(Point point) {
         Double3 temp = this.xyz.subtract(point.xyz);
-        return new Vector(temp.d1,temp.d2,temp.d3);
+        return new Vector(temp);
     }
 
-    public Double3 getXyz() {
-        return xyz;
+
+    public  double getX(){
+        return  xyz.d1;
     }
+
+    public  double getY(){
+        return  xyz.d2;
+    }
+
+    public  double getZ(){
+        return  xyz.d3;
+    }
+
 }

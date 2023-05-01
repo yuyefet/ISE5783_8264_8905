@@ -60,17 +60,17 @@ public class Camera {
     }
 
 
-    public Vector getV_right() {
+    public Vector getVRight() {
         return v_right;
     }
 
 
-    public Vector getV_up() {
+    public Vector getVUp() {
         return v_up;
     }
 
 
-    public Vector getV_to() {
+    public Vector getVTo() {
         return v_to;
     }
 

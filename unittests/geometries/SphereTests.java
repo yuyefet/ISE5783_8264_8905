@@ -59,7 +59,7 @@ class SphereTests {
         result = sphere.findIntersections(new Ray(new Point(-1, 0, 0),
                 new Vector(3, 1, 0)));
         assertEquals(2, result.size(), "Wrong number of points");
-        if (result.get(0).getXyz().getD1() > result.get(1).getXyz().getD1())
+        if (result.get(0).getX() > result.get(1).getX())
             result = List.of(result.get(1), result.get(0));
         assertEquals(List.of(intersect1, intersect2), result, "Ray crosses sphere");
 
@@ -94,15 +94,15 @@ class SphereTests {
         result = sphere.findIntersections(new Ray(new Point(1, 1.5, 0),
                 new Vector(0, -3, 0)));
         assertEquals(2, result.size(), "Wrong number of points");
-        if (result.get(0).getXyz().getD1() > result.get(1).getXyz().getD1())
+        if (result.get(0).getX() > result.get(1).getX())
             result = List.of(result.get(1), result.get(0));
-        else if(result.get(0).getXyz().getD1() == result.get(1).getXyz().getD1())
+        else if(result.get(0).getX() == result.get(1).getX())
         {
-            if (result.get(0).getXyz().getD2() > result.get(1).getXyz().getD2())
+            if (result.get(0).getY() > result.get(1).getY())
                 result = List.of(result.get(1), result.get(0));
-            else if(result.get(0).getXyz().getD2() == result.get(1).getXyz().getD2())
+            else if(result.get(0).getY() == result.get(1).getY())
             {
-                if (result.get(0).getXyz().getD3() > result.get(1).getXyz().getD3())
+                if (result.get(0).getZ() > result.get(1).getZ())
                     result = List.of(result.get(1), result.get(0));
             }
         }

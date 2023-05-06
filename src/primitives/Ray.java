@@ -45,4 +45,12 @@ public class Ray {
         Vector vec = this.dir.scale(t);
         return this.p0.add(vec);
     }
+
+    @Override
+    public String toString() {
+        return "Ray{" +
+                "p0=" + p0 +
+                ", dir=" + dir +
+                '}';
+    }
 }

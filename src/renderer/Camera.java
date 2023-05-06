@@ -2,15 +2,17 @@ package renderer;
 
 import primitives.Point;
 import primitives.Ray;
-import primitives.Util;
 import primitives.Vector;
+
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 /***
  * Camera class with represented by position (Point), three vectors and the ViewPlane.
  */
 public class Camera {
     private Point position;
-    private Vector v_right, v_up, v_to;
+    private Vector vRight, vUp, vTo;
     private double height, width, distance;
 
 
@@ -18,16 +20,16 @@ public class Camera {
      * camera ctor.
      * throws an IllegalArgumentException exeption if vectors are not orthogonal
      * @param position
-     * @param v_up
-     * @param v_to
+     * @param vUp
+     * @param vTo
      */
-    public Camera(Point position, Vector v_up, Vector v_to){
+    public Camera(Point position, Vector vTo, Vector vUp){
 
         this.position = position;
-        if(Util.isZero(v_up.dotProduct(v_to))) {
-            this.v_up = v_up.normalize();
-            this.v_to = v_to.normalize();
-            this.v_right = this.v_up.crossProduct(this.v_to).normalize();//vectors are orthogonal
+        if(isZero(vUp.dotProduct(vTo))) {
+            this.vTo = vTo.normalize();
+            this.vUp = vUp.normalize();
+            this.vRight = this.vTo.crossProduct(this.vUp).normalize();//vectors are orthogonal
         }
         else
             throw new IllegalArgumentException("vectors are not orthogonal");
@@ -61,17 +63,17 @@ public class Camera {
 
 
     public Vector getVRight() {
-        return v_right;
+        return vRight;
     }
 
 
     public Vector getVUp() {
-        return v_up;
+        return vUp;
     }
 
 
     public Vector getVTo() {
-        return v_to;
+        return vTo;
     }
 
 
@@ -98,7 +100,22 @@ public class Camera {
      * @return
      */
     public Ray constructRay(int nX, int nY, int j, int i){
-        return null;
+        Point pC = position.add(vTo.scale(distance));
+        double rY = height / nY;
+        double rX = width / nX;
+
+        double yI = alignZero(-(i - (nY - 1) / 2d) * rY);
+        double xJ = alignZero((j - (nX - 1) / 2d) * rX);
+
+        Point pIJ = pC;
+        if(!isZero(xJ))
+            pIJ = pIJ.add(vRight.scale(xJ));
+        if(!isZero(yI))
+            pIJ = pIJ.add(vUp.scale(yI));
+
+        Vector vIJ = pIJ.subtract(position);
+
+        return new Ray(position, vIJ);
     }
 
 

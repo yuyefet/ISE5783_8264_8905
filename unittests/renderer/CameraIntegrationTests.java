@@ -88,5 +88,6 @@ public class CameraIntegrationTests {
         assertEquals(2,countIntersections(camera,new Triangle(new Point(0,1,-2),new Point(1,-1,-2),new Point(0,20,-2))));
 
 
+
     }
 }

@@ -61,6 +61,17 @@ public class Ray {
      * @return the closest point from the list
      */
     public Point findClosestPoint(List<Point> pointList){
-        return null;
+        double temp;
+        Point min= null;
+        double minDistance=  Double.POSITIVE_INFINITY;
+        for(Point point : pointList)
+        {
+             temp= this.p0.distance(point);
+            if(temp< minDistance) {
+                min = point;
+                minDistance=temp;
+            }
+        }
+        return min;
     }
 }

@@ -63,7 +63,6 @@ public class CameraIntegrationTests {
     {
         final Camera camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setViewPlaneDistance(1);
 
-
         //TC01
         assertEquals(9,countIntersections(camera,new Plane(new Point(0,0,-5),camera.getVTo())));
 

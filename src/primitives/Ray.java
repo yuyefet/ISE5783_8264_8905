@@ -1,5 +1,6 @@
 package primitives;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -52,5 +53,14 @@ public class Ray {
                 "p0=" + p0 +
                 ", dir=" + dir +
                 '}';
+    }
+
+    /***
+     *
+     * @param pointList
+     * @return the closest point from the list
+     */
+    public Point findClosestPoint(List<Point> pointList){
+        return null;
     }
 }

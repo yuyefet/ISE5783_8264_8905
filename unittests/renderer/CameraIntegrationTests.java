@@ -58,21 +58,20 @@ public class CameraIntegrationTests {
         camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setViewPlaneDistance(1);
         assertEquals(0,countIntersections(camera,new Sphere(0.5,new Point(0,0,1))),"wrong number of intersection");
     }
-
-    @Test
+@Test
     void CameraPlaneIntersections()
     {
         final Camera camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setViewPlaneDistance(1);
 
 
         //TC01
-        assertEquals(9,countIntersections(camera,new Plane(new Point(0,0,-2),camera.getVTo())));
+        assertEquals(9,countIntersections(camera,new Plane(new Point(0,0,-5),camera.getVTo())));
 
         // TC02
-        //assertEquals(9,countIntersections(camera,new Plane(new Point(-0.99,0,0),new Point(-0.99,-1,0), new Point(-1,-1,1))));
+        assertEquals(9,countIntersections(camera,new Plane(new Point(1,0,-2),new Vector(0,-1,2))));
 
         // TC03
-        assertEquals(6,countIntersections(camera,new Plane(new Point(0,0,0),new Point(0,-1,0), new Point(-1,-1,1))));
+        assertEquals(6,countIntersections(camera,new Plane(new Point(0,0,-5),new Vector(0,-1,1))));
 
     }
 
@@ -85,7 +84,7 @@ public class CameraIntegrationTests {
         assertEquals(1,countIntersections(camera,new Triangle(new Point(0,1,-2),new Point(1,-1,-2),new Point(-1,-1,-2))));
 
         //TC02
-        assertEquals(2,countIntersections(camera,new Triangle(new Point(0,1,-2),new Point(1,-1,-2),new Point(0,20,-2))));
+        assertEquals(2,countIntersections(camera,new Triangle(new Point(1,-1,-2),new Point(-1,-1,-2),new Point(0,20,-2))));
 
 
 

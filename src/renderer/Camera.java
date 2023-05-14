@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.MissingResourceException;
+
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
@@ -15,6 +17,9 @@ public class Camera {
     private Vector vRight, vUp, vTo;
     private double height, width, distance;
 
+    private ImageWriter imageWriter;
+
+    private RayTracerBase rayTracerBase;
 
     /***
      * camera ctor.
@@ -119,4 +124,36 @@ public class Camera {
     }
 
 
+    /**
+     * set imageWriter
+     * @param imageWriter
+     * @return
+     */
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
+    }
+
+    /**
+     * set RayTracerBase
+     */
+    public Camera setRayTracerBase(RayTracerBase rayTracerBase) {
+        this.rayTracerBase = rayTracerBase;
+        return this;
+    }
+
+    public void renderImage(){
+        try{
+            if(imageWriter == null) {
+                throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
+            }
+            if(rayTracerBase == null){
+                throw new MissingResourceException("missing resource", RayTracerBase.class.getName(), "");
+            }
+        }
+        catch(MissingResourceException ex){
+            throw new UnsupportedOperationException("Not implemented yet" + ex.getClassName());
+        }
+
+    }
 }

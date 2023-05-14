@@ -146,6 +146,7 @@ public class Camera {
         return this;
     }
 
+
     /**
      * chaining functios
      */

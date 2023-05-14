@@ -1,5 +1,6 @@
 package renderer;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -28,26 +29,26 @@ public class Camera {
      * @param vUp
      * @param vTo
      */
-    public Camera(Point position, Vector vTo, Vector vUp){
+    public Camera(Point position, Vector vTo, Vector vUp) {
 
         this.position = position;
-        if(isZero(vUp.dotProduct(vTo))) {
+        if (isZero(vUp.dotProduct(vTo))) {
             this.vTo = vTo.normalize();
             this.vUp = vUp.normalize();
             this.vRight = this.vTo.crossProduct(this.vUp).normalize();//vectors are orthogonal
-        }
-        else
+        } else
             throw new IllegalArgumentException("vectors are not orthogonal");
 
     }
 
     /**
      * set View Plane Size - width & height
+     *
      * @param width
      * @param height
      * @return the camera
      */
-    public Camera setViewPlaneSize(double width, double height){
+    public Camera setViewPlaneSize(double width, double height) {
         this.width = width;
         this.height = height;
         return this;
@@ -55,13 +56,15 @@ public class Camera {
 
     /**
      * set view plane distance
+     *
      * @param distance
      * @return the camera
      */
-    public Camera setViewPlaneDistance(double distance){
+    public Camera setViewPlaneDistance(double distance) {
         this.distance = distance;
         return this;
     }
+
     public Point getPosition() {
         return position;
     }
@@ -104,7 +107,7 @@ public class Camera {
      * @param i according to height
      * @return
      */
-    public Ray constructRay(int nX, int nY, int j, int i){
+    public Ray constructRay(int nX, int nY, int j, int i) {
         Point pC = position.add(vTo.scale(distance));
         double rY = height / nY;
         double rX = width / nX;
@@ -113,9 +116,9 @@ public class Camera {
         double xJ = alignZero((j - (nX - 1) / 2d) * rX);
 
         Point pIJ = pC;
-        if(!isZero(xJ))
+        if (!isZero(xJ))
             pIJ = pIJ.add(vRight.scale(xJ));
-        if(!isZero(yI))
+        if (!isZero(yI))
             pIJ = pIJ.add(vUp.scale(yI));
 
         Vector vIJ = pIJ.subtract(position);
@@ -126,6 +129,7 @@ public class Camera {
 
     /**
      * set imageWriter
+     *
      * @param imageWriter
      * @return
      */
@@ -142,18 +146,60 @@ public class Camera {
         return this;
     }
 
-    public void renderImage(){
-        try{
-            if(imageWriter == null) {
+    /**
+     * chaining functios
+     */
+    public void printGrid(int interval, Color color) {
+
+        if (this.imageWriter == null)
+            throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
+
+        imageWriter.printGrid(interval, color);
+    }
+
+    /***
+     * write to image
+     * @return
+     */
+    public Camera writeToImage() {
+        if (this.imageWriter == null)
+            throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
+        imageWriter.writeToImage();
+        return this;
+    }
+
+    public void renderImage() {
+        try {
+            if (imageWriter == null) {
                 throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
             }
-            if(rayTracerBase == null){
+            if (rayTracerBase == null) {
                 throw new MissingResourceException("missing resource", RayTracerBase.class.getName(), "");
             }
-        }
-        catch(MissingResourceException ex){
+            int nX = imageWriter.getNx();
+            int nY = imageWriter.getNy();
+            for (int i = 0; i < nY; i++) {
+                for (int j = 0; j < nX; j++) {
+                    castRay(nX, nY, i, j);
+                }
+            }
+
+        } catch (MissingResourceException ex) {
             throw new UnsupportedOperationException("Not implemented yet" + ex.getClassName());
         }
 
+    }
+    /**
+     * Cast ray from camera in order to color a pixel
+     *
+     * @param nX   - resolution on X axis (number of pixels in row)
+     * @param nY   - resolution on Y axis (number of pixels in column)
+     * @param icol - pixel's column number (pixel index in row)
+     * @param jrow - pixel's row number (pixel index in column)
+     */
+    private void castRay(int nX, int nY, int icol, int jrow) {
+        Ray ray = constructRay(nX, nY, jrow, icol);
+        Color pixelColor = rayTracerBase.traceRay(ray);
+        imageWriter.writePixel(jrow, icol, pixelColor);
     }
 }

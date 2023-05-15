@@ -15,6 +15,7 @@ public class RayTracerBasic extends RayTracerBase {
         super(scene);
     }
 
+
     @Override
     public Color traceRay(Ray ray)
     {

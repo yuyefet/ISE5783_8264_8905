@@ -1,6 +1,7 @@
 package lighting;
 
 import primitives.Color;
+import primitives.Point;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ abstract class Light {
      * @param intensity - get intensity
      */
     protected Light(Color intensity){
+
         this.intensity = intensity;
     }
 
@@ -26,4 +28,5 @@ abstract class Light {
     public Color getIntensity() {
         return intensity;
     }
+
 }

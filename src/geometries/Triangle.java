@@ -22,14 +22,13 @@ public class Triangle extends Polygon {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
-
+    protected List<GeoPoint> findGeoIntersectionHelper(Ray ray) {
         Vector v = ray.getDir();
         Point p0 = ray.getP0();
 
-        List<Point> list = this.plane.findIntersections(ray);
+        List<GeoPoint> intersections = this.plane.findGeoIntersectionHelper(ray);
 
-        if (list == null)
+        if (intersections == null)
             return null;
 
         Vector v1, v2, v3;
@@ -61,8 +60,10 @@ public class Triangle extends Polygon {
         vn3 = alignZero(v.dotProduct(n3));
 
         if ((vn1 < 0 && vn2 < 0 && vn3 < 0) || (vn1 > 0 && vn2 > 0 && vn3 > 0)) {
-            return list;
+            intersections.get(0).geometry = this;
+            return intersections;
         }
         return null;
+
     }
 }

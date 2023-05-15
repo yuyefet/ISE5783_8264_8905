@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Plane class
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
 
     private Point q0;
 
@@ -77,7 +77,7 @@ public class Plane implements Geometry {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionHelper(Ray ray) {
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
         Vector n = this.normal;
@@ -111,7 +111,6 @@ public class Plane implements Geometry {
         }
 
         Point result = ray.GetPoint(t);
-        return List.of(result);
-
+        return List.of(new GeoPoint(this, result));
     }
 }

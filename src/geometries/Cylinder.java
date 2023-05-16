@@ -42,6 +42,7 @@ public class Cylinder extends Tube {
     }
 
 
+
     @Override
     public Vector getNormal(Point point) {
         Point p0 = this.axisRay.getP0();

@@ -9,6 +9,7 @@ import static primitives.Util.alignZero;
 public class SpotLight extends PointLight {
 
     private Vector direction;
+    private int narrowBeam = 1;
 
     /***
      * ctor using super
@@ -25,6 +26,17 @@ public class SpotLight extends PointLight {
         double dl = alignZero(getL(p).dotProduct(this.direction));
         if (dl <= 0) return Color.BLACK;
         return super.getIntensity(p).scale(dl);
+    }
+
+    /**
+     * Sets the narrow beam of the spotlight
+     *
+     * @param narrowBeam The angle of the narrow beam in degrees.
+     * @return The SpotLight object.
+     */
+    public SpotLight setNarrowBeam(int narrowBeam) {
+        this.narrowBeam = narrowBeam;
+        return this;
     }
 
     @Override

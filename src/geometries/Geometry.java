@@ -1,9 +1,6 @@
 package geometries;
 
-import primitives.Color;
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.List;
 
@@ -17,6 +14,8 @@ public abstract class Geometry extends Intersectable {
      * @return return the normal Vector
      */
     protected Color emission = Color.BLACK;
+    private Material material = new Material();
+
     public abstract Vector getNormal(Point point);
 
     /***
@@ -34,6 +33,15 @@ public abstract class Geometry extends Intersectable {
      */
     public Geometry setEmission(Color emission) {
         this.emission = emission;
+        return this;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
+
+    public Geometry setMaterial(Material material) {
+        this.material = material;
         return this;
     }
 }

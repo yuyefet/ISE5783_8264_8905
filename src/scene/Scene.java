@@ -11,7 +11,7 @@ import java.util.List;
 public class Scene {
     public String name;
 
-    public List<LightSource> light = new LinkedList<LightSource>();
+    public List<LightSource> lights = new LinkedList<LightSource>();
     public Color background = Color.BLACK;
 
     public AmbientLight ambientLight=AmbientLight.NONE;
@@ -40,11 +40,11 @@ public class Scene {
 
     /**
      * set Light list
-     * @param light
+     * @param lights
      * @return this
      */
-    public Scene setLight(List<LightSource> light) {
-        this.light = light;
+    public Scene setLights(List<LightSource> lights) {
+        this.lights = lights;
         return this;
     }
 }

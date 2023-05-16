@@ -169,7 +169,11 @@ public class Camera {
         return this;
     }
 
-    public void renderImage() {
+    /***
+     *
+     * @return Camera
+     */
+    public Camera renderImage() {
         try {
             if (imageWriter == null) {
                 throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
@@ -188,7 +192,7 @@ public class Camera {
         } catch (MissingResourceException ex) {
             throw new UnsupportedOperationException("Not implemented yet" + ex.getClassName());
         }
-
+        return this;
     }
     /**
      * Cast ray from camera in order to color a pixel

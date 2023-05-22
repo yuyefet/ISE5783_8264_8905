@@ -9,42 +9,86 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Scene {
-    public String name;
-
-    public List<LightSource> lights = new LinkedList<LightSource>();
-    public Color background = Color.BLACK;
-
-    public AmbientLight ambientLight=AmbientLight.NONE;
-
-    public Geometries geometries= new Geometries();
+     private final String name;
+//
+    private final List<LightSource> lights;
 
 
-    public Scene(String name) {
-        this.name = name;
+    private final Color background;
+    private final Geometries geometries;
+
+    private  AmbientLight ambientLight;
+    public List<LightSource> getLights() {
+        return lights;
     }
 
-    public Scene setBackground(Color background) {
-        this.background = background;
-        return  this;
+    public Color getBackground() {
+        return background;
     }
 
+    public Geometries getGeometries() {
+        return geometries;
+    }
+
+    public AmbientLight getAmbientLight() {
+        return ambientLight;
+    }
     public Scene setAmbientLight(AmbientLight ambientLight) {
         this.ambientLight = ambientLight;
         return this;
     }
 
-    public Scene setGeometries(Geometries geometries) {
-        this.geometries = geometries;
-        return this;
+//
+
+  //  public Scene(String name) {
+       // this.name = name;
+   // }
+    private Scene (SceneBuilder sceneBuilder){
+
+        this.ambientLight = sceneBuilder.ambientLight;
+        geometries = sceneBuilder.geometries;
+        lights = sceneBuilder.lights;
+        background = sceneBuilder.background;
+        name = sceneBuilder.name;
     }
 
-    /**
-     * set Light list
-     * @param lights
-     * @return this
-     */
-    public Scene setLights(List<LightSource> lights) {
-        this.lights = lights;
-        return this;
+
+
+
+
+    public static class SceneBuilder {
+        private final String name;
+        private AmbientLight ambientLight=AmbientLight.NONE;
+        private Geometries geometries=new Geometries();
+        private List<LightSource> lights= new LinkedList<>();
+        private Color background=Color.BLACK;
+
+        public SceneBuilder(String name) {
+            this.name = name;
+        }
+
+        public SceneBuilder setAmbientLight(AmbientLight ambientLight) {
+            this.ambientLight = ambientLight;
+            return this;
+        }
+
+        public SceneBuilder setGeometries(Geometries geometries) {
+            this.geometries = geometries;
+            return this;
+        }
+
+        public SceneBuilder setLights(List<LightSource> lights) {
+            this.lights = lights;
+            return this;
+        }
+
+        public SceneBuilder setBackground(Color background) {
+            this.background = background;
+            return this;
+        }
+
+        public Scene build(){
+            return new Scene(this);
+        }
     }
 }

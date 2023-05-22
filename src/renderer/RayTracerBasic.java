@@ -20,12 +20,12 @@ public class RayTracerBasic extends RayTracerBase {
     @Override
     public Color traceRay(Ray ray)
     {
-        List<GeoPoint> intsersections = scene.geometries.findGeoIntersections(ray);
+        List<GeoPoint> intsersections = scene.getGeometries().findGeoIntersections(ray);
         if(intsersections !=null) {
             GeoPoint closestPoint = ray.findClosestGeoPoint(intsersections);
             return calcColor(closestPoint,ray);
         }
-        return scene.background;
+        return scene.getBackground();
     }
 
     /**
@@ -35,7 +35,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @return the color of the ambient light of the scene
      */
     private Color calcColor(GeoPoint p, Ray ray) {
-        return scene.ambientLight.getIntensity().add(p.geometry.getEmission(), calcLocalEffects(p, ray));
+        return scene.getAmbientLight().getIntensity().add(p.geometry.getEmission(), calcLocalEffects(p, ray));
     }
 
     /**
@@ -52,7 +52,7 @@ public class RayTracerBasic extends RayTracerBase {
         if (nv == 0) return Color.BLACK;
         Material material = geoPoint.geometry.getMaterial();
         Color color = Color.BLACK;
-        for (LightSource lightSource : scene.lights) {
+        for (LightSource lightSource : scene.getLights()) {
             Vector l = lightSource.getL(geoPoint.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sing(nv)

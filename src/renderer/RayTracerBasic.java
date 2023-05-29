@@ -13,6 +13,9 @@ import static primitives.Util.alignZero;
 
 public class RayTracerBasic extends RayTracerBase {
 
+    private static final int MAX_CALC_COLOR_LEVEL = 10;
+    private static final double MIN_CALC_COLOR_K = 0.001;
+
     public RayTracerBasic(Scene scene) {
         super(scene);
     }
@@ -22,24 +25,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private static final double DELTA = 0.1;
 
-    /**
-     * Check non-shading between a dot and the signature light source
-     *
-     * @param gp
-     * @param l
-     * @param n
-     * @param nl
-     * @param lightSource
-     * @return true
-     */
-    private boolean unshaded(GeoPoint gp, Vector l, Vector n, double nl, LightSource lightSource) {
-        Vector lightDirection = l.scale(-1); // from point to light source
-        Vector epsVector = n.scale(nl <0 ? DELTA : -DELTA).normalize();
-        Point point = gp.point.add(epsVector);
-        Ray lightRay = new Ray(point, lightDirection);
-        List<GeoPoint> intersections = scene.getGeometries().findGeoIntersections(lightRay,lightSource.getDistance(gp.point));
-        return intersections==null;
-    }
+
 
 
     @Override
@@ -120,4 +106,62 @@ public class RayTracerBasic extends RayTracerBase {
         Vector r = l.subtract(n.scale(2 * (l.dotProduct(n))));
         return intensity.scale(kS.scale(Math.pow(Math.max(v.scale(-1).dotProduct(r), 0), nShininess)));
     }
+
+    /**
+     * Check non-shading between a dot and the signature light source
+     *
+     * @param gp
+     * @param l
+     * @param n
+     * @param nl
+     * @param lightSource
+     * @return true
+     */
+    private boolean unshaded(GeoPoint gp, Vector l, Vector n, double nl, LightSource lightSource) {
+        Vector lightDirection = l.scale(-1); // from point to light source
+        Vector epsVector = n.scale(nl <0 ? DELTA : -DELTA).normalize();
+        Point point = gp.point.add(epsVector);
+        Ray lightRay = new Ray(point, lightDirection);
+        List<GeoPoint> intersections = scene.getGeometries().findGeoIntersections(lightRay,lightSource.getDistance(gp.point));
+        return intersections==null;
+    }
+
+    private Color calcGlobalEffects(GeoPoint gp, Ray ray) {
+        Color color = Color.BLACK;
+        Ray reflectedRay = constructReflectedRay(n, gp.point, inRay);
+        GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
+        if (…) color = color.add(calcColor(reflectedPoint, reflectedRay)
+                .scale(gp.geometry.getKr()));
+        Ray refractedRay = constructRefractedRay(gp.point, inRay);
+        GeoPoint refractedPoint = findClosestIntersection(refractedRay);
+        if (…) color = color.add(calcColor(refractedPoint, refractedRay)
+                .scale(gp.geometry.getKt());
+        return color;
+    }
+
+    /**
+     *  Construct a reflected ray from a point, a normal vector, and an incoming ray
+     *
+     * @param n The normal vector of the surface at the point of intersection.
+     * @param point The point of intersection
+     * @param inRay The ray that hit the object
+     * @return A ray that is reflected off the surface of the object.
+     */
+    private Ray constructReflectedRay(Vector n, Point point, Vector inRay) {
+        return new Ray(point, inRay.subtract(n.scale(2 * inRay.dotProduct(n))), n);
+    }
+
+    /**
+     * Construct a refracted ray from the intersection point, the incoming ray, and the normal vector.
+     *
+     * @param n the normal vector of the surface
+     * @param point The point of intersection between the ray and the object.
+     * @param inRay the ray that hit the object
+     * @return A new ray with the same origin as the point of intersection, the same direction as the incoming ray, and the
+     * same normal as the normal of the surface.
+     */
+    private Ray constructRefractedRay(Vector n, Point point, Vector inRay) {
+        return new Ray(point, inRay, n);
+    }
+
 }

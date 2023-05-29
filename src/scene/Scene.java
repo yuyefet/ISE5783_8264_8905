@@ -47,7 +47,7 @@ public class Scene {
   //  public Scene(String name) {
        // this.name = name;
    // }
-    private Scene (SceneBuilder sceneBuilder){
+  private Scene(SceneBuilder sceneBuilder){
 
         this.ambientLight = sceneBuilder.ambientLight;
         geometries = sceneBuilder.geometries;

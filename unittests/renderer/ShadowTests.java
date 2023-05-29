@@ -42,6 +42,7 @@ public class ShadowTests {
                            new Point(-100, -100, 200));
    }
 
+
    /**
 	 * Sphere-Triangle shading - move triangle up-right
 	 */

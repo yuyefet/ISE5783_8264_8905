@@ -1,4 +1,5 @@
 package renderer;
+
 import geometries.Intersectable.GeoPoint;
 
 
@@ -16,16 +17,45 @@ public class RayTracerBasic extends RayTracerBase {
         super(scene);
     }
 
+    /**
+     * Ray head shift size for shading rays
+     */
+    private static final double DELTA = 0.1;
+
+    /**
+     * Check non-shading between a dot and the signature light source
+     *
+     * @param gp
+     * @param l
+     * @param n
+     * @param nl
+     * @param lightSource
+     * @return true
+     */
+    private boolean unshaded(GeoPoint gp, Vector l, Vector n, double nl, LightSource lightSource) {
+        Vector lightDirection = l.scale(-1); // from point to light source
+        Vector epsVector = n.scale(nl <0 ? DELTA : -DELTA).normalize();
+        Point point = gp.point.add(epsVector);
+        Ray lightRay = new Ray(point, lightDirection);
+        List<GeoPoint> intersections = scene.getGeometries().findGeoIntersections(lightRay);
+        if (intersections == null)
+            return true;
+        for (GeoPoint geoPoint : intersections) {
+            if (geoPoint.point.distance(point) < lightSource.getDistance(geoPoint.point))
+                return false;
+        }
+        return true;
+    }
+
 
     @Override
-    public Color traceRay(Ray ray)
-    {
+    public Color traceRay(Ray ray) {
         List<GeoPoint> intsersections = scene.getGeometries().findGeoIntersections(ray);
-        if(intsersections !=null) {
-            GeoPoint closestPoint = ray.findClosestGeoPoint(intsersections);
-            return calcColor(closestPoint,ray);
-        }
-        return scene.getBackground();
+        if (intsersections == null)
+            return scene.getBackground();
+
+        GeoPoint closestPoint = ray.findClosestGeoPoint(intsersections);
+        return calcColor(closestPoint, ray);
     }
 
     /**
@@ -56,9 +86,11 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(geoPoint.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sing(nv)
-                Color intensity = lightSource.getIntensity(geoPoint.point);
-                color = color.add(calcDiffusive(material.kD, l, n, intensity),
-                        calcSpecular(material.kS, l, n, v, material.nShininess, intensity));
+                if (unshaded(geoPoint, l, n, nl, lightSource)) {
+                    Color intensity = lightSource.getIntensity(geoPoint.point);
+                    color = color.add(calcDiffusive(material.kD, l, n, intensity),
+                            calcSpecular(material.kS, l, n, v, material.nShininess, intensity));
+                }
             }
         }
         return color;

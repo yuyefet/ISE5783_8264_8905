@@ -7,6 +7,9 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
+
 /**
  * Plane class
  */
@@ -95,16 +98,16 @@ public class Plane extends Geometry {
         }
 
         nv = n.dotProduct(v);
-        if(Util.isZero(nv)){
+        if(isZero(nv)){
             return null;
         }
 
         nqp0 = n.dotProduct(sub);
-        if(Util.isZero(nqp0)){
+        if(isZero(nqp0)){
             return null;
         }
 
-        double t = Util.alignZero(nqp0/nv);
+        double t = alignZero(nqp0/nv);
 
         if(t <= 0){
             return null;
@@ -113,4 +116,5 @@ public class Plane extends Geometry {
         Point result = ray.GetPoint(t);
         return List.of(new GeoPoint(this, result));
     }
+
 }

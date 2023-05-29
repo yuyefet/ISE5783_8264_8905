@@ -25,27 +25,6 @@ public class Geometries extends Intersectable {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
-
-        List<Point> points = null;
-
-        for (Intersectable geo : intersections) {
-
-            List<Point> hasIntersections = geo.findIntersections(ray);
-
-            if (hasIntersections != null) {
-                //it means that there are intersections
-                if (points == null) {
-                    points = new ArrayList<>();
-                }
-                points.addAll(hasIntersections);
-            }
-        }
-
-        return points; //return null in case of 0 intersections
-    }
-
-    @Override
     protected List<GeoPoint> findGeoIntersectionHelper(Ray ray) {
         List<GeoPoint> geoIntersections = null;
         for(Intersectable item : intersections){

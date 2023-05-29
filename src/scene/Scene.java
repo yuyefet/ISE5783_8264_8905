@@ -9,7 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Scene {
-     private final String name;
+    public String getName() {
+        return name;
+    }
+
+    private final String name;
 //
     private final List<LightSource> lights;
 

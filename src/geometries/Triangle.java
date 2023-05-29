@@ -64,6 +64,6 @@ public class Triangle extends Polygon {
             return intersections;
         }
         return null;
-
     }
+
 }

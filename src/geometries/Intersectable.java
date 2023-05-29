@@ -51,7 +51,7 @@ public abstract class Intersectable {
      * @param ray the ray which intersect the object
      * @return list of intersection points
      */
-    public List<Point> findIntersections(Ray ray) {
+    public final List<Point> findIntersections(Ray ray) {
         List<GeoPoint> intersections = findGeoIntersections(ray);
         return intersections == null ? null
                 : intersections.stream().map(gp -> gp.point).collect(Collectors.toList());
@@ -63,7 +63,7 @@ public abstract class Intersectable {
      * @param ray The ray to intersect with the object
      * @return A list of GeoPoints.
      */
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
+    public final List<GeoPoint> findGeoIntersections(Ray ray) {
         List<GeoPoint> intersections = findGeoIntersectionHelper(ray);
         return intersections;
     }
@@ -74,5 +74,11 @@ public abstract class Intersectable {
      * @return A list of GeoPoints.
      */
     protected abstract List<GeoPoint> findGeoIntersectionHelper(Ray ray);
+    /**
+     * > This function returns a list of all the points where the ray intersects the surface of the sphere
+     *
+     * @param ray The ray to intersect with the object
+     * @return A list of GeoPoints.
+     */
 
 }

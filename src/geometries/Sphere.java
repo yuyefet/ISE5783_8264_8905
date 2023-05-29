@@ -7,6 +7,8 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.alignZero;
+
 /**
  * Sphere Class
  */
@@ -46,58 +48,29 @@ public class Sphere extends RadialGeometry {
                 '}';
     }
 
+
+
     @Override
-    protected List<GeoPoint> findGeoIntersectionHelper(Ray ray) {
-        Point p0 = ray.getP0();
-        Point o = this.center;
-        Vector v = ray.getDir();
-        double r = this.radius;
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray,double maxDistance) {
         Vector u;
-
-        try {
-            u = o.subtract(p0);
+        try { //when P0 and the center are the same point
+            u = this.center.subtract(ray.getP0());
         } catch (IllegalArgumentException ex) {
-            //p0 is the center of the sphere
-            Point intersection = o.add(v.normalize().scale(this.radius));
-            return List.of(new GeoPoint(this,intersection));
+            return  List.of(new GeoPoint(this, ray.GetPoint(this.radius)));
         }
 
-        double tm = Util.alignZero(v.dotProduct(u));
-        double dSquared = Util.isZero(tm) ? Util.alignZero(u.lengthSquared()) : Util.alignZero(u.lengthSquared() - tm * tm);
+        double tm = u.dotProduct(ray.getDir());
+        double d2 = u.lengthSquared() - tm * tm;
+        double th2 = (radius*radius) - d2;
+        if (alignZero(th2) <= 0) return null;
 
-        //no intersection: the ray direction is outside the sphere
-        if (dSquared >= r * r)
-            return null;
+        double th = Math.sqrt(th2);
+        double t2 = alignZero(tm + th);// double t2 = alignZero(tm + th2);
+        if (t2 <= 0) return null;
 
-        double th = Math.sqrt(Util.alignZero(r * r - dSquared));
-        double t1 = Util.alignZero(tm - th);
-        double t2 = Util.alignZero(tm + th);
+        double t1 = alignZero(tm -th);
+        if(alignZero(t1-maxDistance)>0 || alignZero(t2-maxDistance)>0) return null;
 
-
-        if (t1 > 0 && t2 > 0) {
-
-            Point P1 = ray.GetPoint(t1);
-
-            Point P2 = ray.GetPoint(t2);
-
-            return List.of(new GeoPoint(this,P1),new GeoPoint(this,P2));
-        }
-
-        if (t1 > 0) {
-            Point P1 = ray.GetPoint(t1);
-
-            return List.of(new GeoPoint(this,P1));
-        }
-
-
-        if (t2 > 0) {
-
-            Point P2 = ray.GetPoint(t2);
-
-            return List.of(new GeoPoint(this,P2));
-        }
-
-        return null;
-
+        return t1 <= 0 ? List.of(new GeoPoint(this, ray.GetPoint(t2))) : List.of(new GeoPoint(this, ray.GetPoint(t1)),new GeoPoint(this, ray.GetPoint(t2)));
     }
 }

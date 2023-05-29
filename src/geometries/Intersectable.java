@@ -47,38 +47,49 @@ public abstract class Intersectable {
         }
     }
     /**
-     * Function to calculate the intersection points between a ray and the geometric object
+     * function to calculate the intersection points between a ray and the geometric object
      * @param ray the ray which intersect the object
      * @return list of intersection points
      */
-    public final List<Point> findIntersections(Ray ray) {
-        List<GeoPoint> intersections = findGeoIntersections(ray);
-        return intersections == null ? null
-                : intersections.stream().map(gp -> gp.point).collect(Collectors.toList());
+    public List<Point> findIntersections(Ray ray) {
+        var geoList = findGeoIntersections(ray);
+        return geoList == null ? null
+                : geoList.stream().map(gp -> gp.point).toList();
     }
 
-
-    /**
-     * This function returns a list of all the points where the ray intersects the surface of the sphere
-     * @param ray The ray to intersect with the object
-     * @return A list of GeoPoints.
-     */
-    public final List<GeoPoint> findGeoIntersections(Ray ray) {
-        List<GeoPoint> intersections = findGeoIntersectionHelper(ray);
-        return intersections;
-    }
-
-    /**
-     * This function is here to help the findGeoIntersections function to find the list of GeoPoint intersections
-     * @param ray The ray to intersect with the object
-     * @return A list of GeoPoints.
-     */
-    protected abstract List<GeoPoint> findGeoIntersectionHelper(Ray ray);
     /**
      * > This function returns a list of all the points where the ray intersects the surface of the sphere
      *
      * @param ray The ray to intersect with the object
      * @return A list of GeoPoints.
      */
+    public List<GeoPoint> findGeoIntersections(Ray ray)
+    {
+        return findGeoIntersections(ray, Double.POSITIVE_INFINITY);
+    }
+
+    /**
+     * "Finds the intersections of a ray with the Earth's surface, up to a maximum distance."
+     *
+     * The function is declared as `public final` and `static`. The `final` keyword means that the function cannot be
+     * overridden by a subclass. The `static` keyword means that the function is a class method, not an instance method
+     *
+     * @param ray The ray to intersect with the GeoJsonFeature.
+     * @param maxDistance The maximum distance from the ray origin to the intersection point.
+     * @return A list of GeoPoints.
+     */
+    public final List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
+        return findGeoIntersectionsHelper(ray, maxDistance);
+    }
+
+    /**
+     * Find the intersection points of the given ray with this GeoShape, up to the given maximum distance
+     *
+     * @param ray The ray to intersect with the object.
+     * @param maxDistance The maximum distance from the ray origin to the intersection point.
+     * @return A list of GeoPoints.
+     */
+    protected abstract List<GeoPoint>
+    findGeoIntersectionsHelper(Ray ray, double maxDistance);
 
 }

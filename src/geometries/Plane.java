@@ -79,42 +79,26 @@ public class Plane extends Geometry {
         return this.normal;
     }
 
+
+
     @Override
-    protected List<GeoPoint> findGeoIntersectionHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray,double maxDistance) {
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
         Vector n = this.normal;
         Point q = this.q0;
         Vector sub;
-        double nv;
-        double nqp0;
-
-        try{
-            sub = q.subtract(p0);
-        }
-        catch(IllegalArgumentException ex)
-        {
+        try {
+            sub = q0.subtract(p0);
+        } catch (IllegalArgumentException ignore) {
             return null;
         }
 
-        nv = n.dotProduct(v);
-        if(isZero(nv)){
-            return null;
-        }
+        double nv = normal.dotProduct(v);
+        if (isZero(nv)) return null;
 
-        nqp0 = n.dotProduct(sub);
-        if(isZero(nqp0)){
-            return null;
-        }
-
-        double t = alignZero(nqp0/nv);
-
-        if(t <= 0){
-            return null;
-        }
-
-        Point result = ray.GetPoint(t);
-        return List.of(new GeoPoint(this, result));
+        double t = alignZero(normal.dotProduct(sub) / nv);
+        return t > 0 && alignZero(t-maxDistance)<=0 ?  List.of(new GeoPoint(this, ray.GetPoint(t))) : null;
     }
 
 }

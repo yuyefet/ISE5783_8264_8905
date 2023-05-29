@@ -37,14 +37,8 @@ public class RayTracerBasic extends RayTracerBase {
         Vector epsVector = n.scale(nl <0 ? DELTA : -DELTA).normalize();
         Point point = gp.point.add(epsVector);
         Ray lightRay = new Ray(point, lightDirection);
-        List<GeoPoint> intersections = scene.getGeometries().findGeoIntersections(lightRay);
-        if (intersections == null)
-            return true;
-        for (GeoPoint geoPoint : intersections) {
-            if (geoPoint.point.distance(point) < lightSource.getDistance(geoPoint.point))
-                return false;
-        }
-        return true;
+        List<GeoPoint> intersections = scene.getGeometries().findGeoIntersections(lightRay,lightSource.getDistance(gp.point));
+        return intersections==null;
     }
 
 

@@ -15,6 +15,11 @@ public class Ray {
     private Vector dir;
 
     /**
+     * Ray head shift size for shading rays
+     */
+    private static final double DELTA = 0.1;
+
+    /**
      * ctor for Ray
      * @param p
      * @param vec
@@ -22,6 +27,20 @@ public class Ray {
     public Ray(Point p,Vector vec) {
         this.dir=vec.normalize();
         this.p0=p;
+    }
+
+    /**
+     *  Constructor that creates a ray from a point, a direction and a normal.
+     *
+     * @param head head of the ray
+     * @param direction direction of the vector
+     * @param normal normal vector
+     */
+    public Ray(Point head, Vector direction, Vector normal) {
+        double nd = normal.dotProduct(direction);
+        Vector epsVector = normal.scale( nd >= 0 ? DELTA : - DELTA);
+        p0 = head.add(epsVector);
+        dir = direction;
     }
 
     @Override

@@ -81,7 +81,7 @@ public class RayTracerBasic extends RayTracerBase {
         double nv = alignZero(n.dotProduct(v));
         if (nv == 0) return Color.BLACK;
         Material material = geoPoint.geometry.getMaterial();
-        Color color = Color.BLACK;
+        Color color = geoPoint.geometry.getEmission();
         for (LightSource lightSource : scene.getLights()) {
             Vector l = lightSource.getL(geoPoint.point);
             double nl = alignZero(n.dotProduct(l));
@@ -189,7 +189,7 @@ public class RayTracerBasic extends RayTracerBase {
         Vector lightDirection = l.scale(-1); // from point to light source
         Ray lightRay = new Ray(geoPoint.point, lightDirection,n);
         List<GeoPoint> intersections = scene.getGeometries().findGeoIntersections(lightRay,lightSource.getDistance(geoPoint.point));
-        if(intersections ==null)
+        if(intersections == null)
             return Double3.ONE;
         Double3 ktr = Double3.ONE;
         double distance =lightSource.getDistance(geoPoint.point);

@@ -40,7 +40,7 @@ public class Ray {
         double nd = normal.dotProduct(direction);
         Vector epsVector = normal.scale( nd >= 0 ? DELTA : - DELTA);
         p0 = head.add(epsVector);
-        dir = direction;
+        dir = direction.normalize();
     }
 
     @Override

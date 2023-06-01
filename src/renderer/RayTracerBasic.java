@@ -159,21 +159,7 @@ public class RayTracerBasic extends RayTracerBase {
         return mat.kS.scale(Math.pow(Math.max(v.scale(-1).dotProduct(r), 0), mat.nShininess));
     }
 
-    /**
-     * If the ray from the point to the light source intersects any geometry, then the point is shaded, otherwise it's
-     * unshaded
-     *
-     * @param LightSource The light source
-     * @param gp    The point on the geometry that we're shading.
-     * @param l     The vector from the light source to the point on the geometry.
-     * @param n     the normal vector to the surface at the intersection point
-     * @param nv    the dot product of the normal vector and the vector from the light source to the point.
-     * @return true if the point is unshaded, and false if it is shaded.
-     */
-    /*private boolean unshaded(GeoPoint gp,LightSource lightSource, Vector l, Vector n, double nl)
-    {
-        return transparency(gp,l,n,lightSource,nl) == Double3.ZERO ? true : false;
-    }*/
+
 
     /**
      * The function calculates the transparency of the point, by calculating the transparency of each point on the way to

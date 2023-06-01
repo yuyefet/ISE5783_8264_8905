@@ -17,11 +17,9 @@ import scene.Scene;
  */
 public class LightsTests {
     private final Scene scene1 = new Scene.SceneBuilder("Test scene")
-            .setBackground(new Color(100,200,140))
             .build();
     private final Scene scene2 = new Scene.SceneBuilder("Test scene")
             .setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)))
-            .setBackground(new Color(100,200,150))
             .build();
 
     private final Camera camera1 = new Camera(new Point(0, 0, 1000),

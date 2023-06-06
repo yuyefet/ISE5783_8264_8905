@@ -96,12 +96,43 @@ public class ShadowTests {
                               .setMaterial(new Material().setkD(0.5).setkD(0.5).setnShininess(30)) //
       );
       scene.getLights().add( //
-                       new SpotLight(new Color(700, 400, 400), new Point(40, 40, 115), new Vector(-1, -1, -4)) //
-                          .setkL(4E-4).setkQ(2E-5));
+              new SpotLight(new Color(700, 400, 400), new Point(40, 40, 115), new Vector(-1, -1, -4)) //
+                      .setkL(4E-4).setkQ(2E-5));
 
       camera.setImageWriter(new ImageWriter("shadowTrianglesSphere", 600, 600)) //
          .renderImage() //
          .writeToImage();
    }
+
+    private Scene scene2      = new Scene.SceneBuilder("Test scene").build();
+    private Camera camera2     = new Camera(new Point(0, 120, 0), new Vector(0, -1, 0), new Vector(0, 0, 1))   //
+            .setViewPlaneSize(150, 150).setViewPlaneDistance(100);
+
+    private final SpotLight spotLight= (SpotLight) new SpotLight(new Color(700, 400, 400),new Point(0,-50,90),new Vector(0,0,-1)).setkL(4E-4).setkQ(2E-5);
+    private final SpotLight spotLight2= (SpotLight) new SpotLight(new Color(700, 400, 400),new Point(90,-50,90),new Vector(0,0,-1)).setkL(4E-4).setkQ(2E-5);
+
+    private final Plane floor = (Plane) new Plane(new Point(0,0,-100),new Vector(0,0,1)).setEmission(new Color(WHITE)).setMaterial(new Material().setkS(0.8).setnShininess(60));
+    private final Plane top = (Plane) new Plane(new Point(0,0,100),new Vector(0,0,-1)).setEmission(new Color(RED)).setMaterial(new Material().setkS(0.8).setnShininess(60));
+    private final Plane wallRight = (Plane) new Plane(new Point(100,0,0),new Vector(-1,0,0)).setEmission(new Color(BLUE)).setMaterial(new Material().setkS(0.8).setnShininess(60));
+    private final Plane wallLeft = (Plane) new Plane(new Point(-100,0,0),new Vector(1,0,0)).setEmission(new Color(GREEN)).setMaterial(new Material().setkS(0.8).setnShininess(60));
+    private final Plane wallFront = (Plane) new Plane(new Point(0,-100,0),new Vector(0,1,0)).setEmission(new Color(GRAY)).setMaterial(new Material().setkS(0.8).setnShininess(60));
+    private final Plane wallBack = (Plane) new Plane(new Point(0,150,0),new Vector(0,-1,0)).setEmission(new Color(ORANGE)).setMaterial(new Material().setkS(0.8).setnShininess(60));
+
+    private final Sphere sphere2 = (Sphere) new Sphere(20,new Point(0,20,-20)).setEmission(new Color(BLUE)).setMaterial(new Material().setkD(0.5).setkD(0.5).setnShininess(30)) ;
+
+    @Test
+    public void buildImage() {
+
+        scene2.getGeometries().add(floor,top,wallBack,wallFront,wallLeft,wallLeft,wallRight,sphere2);
+        scene2.getLights().add(spotLight);
+        scene2.getLights().add(spotLight2);
+        int n=600;
+
+        // interesting fact when camera is set to position(0,0,1000) an exception is thrown
+        camera2.setRayTracerBase(new RayTracerBasic(scene2)).
+                setImageWriter(new ImageWriter("SoftShadowTest",n , n)) //
+                .renderImage() //
+                .writeToImage();
+    }
 
 }

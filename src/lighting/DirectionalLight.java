@@ -4,6 +4,11 @@ import primitives.Color;
 import primitives.Vector;
 import primitives.Point;
 
+/**
+ * Class Directional Light
+ * a bright light with direction
+ * extends the abstract class Light and implements the interface LightSource
+ */
 public class DirectionalLight extends Light implements LightSource{
     private Vector direction;
 
@@ -15,6 +20,16 @@ public class DirectionalLight extends Light implements LightSource{
     public DirectionalLight(Color intensity, Vector direction) {
         super(intensity);
         this.direction = direction.normalize();
+    }
+
+    /**
+     * @param numOfPoints The number of points to generate
+     * @param reference   The reference point
+     * @return
+     */
+    @Override
+    public Point[] getPoints(int numOfPoints, Point reference) {
+        return null;
     }
 
     @Override

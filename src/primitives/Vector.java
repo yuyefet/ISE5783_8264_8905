@@ -95,6 +95,17 @@ public class Vector extends Point {
         return Math.sqrt(this.lengthSquared());
     }
 
+
+    /**
+     * Return an orthogonal vector to the current vector
+     *
+     * @return the orthogonal vector to the current vector
+     */
+    public Vector getOrthogonal() {
+
+        return xyz.d1 == 0 ? new Vector(1,0,0) : new Vector(-xyz.d2, xyz.d1, 0);
+    }
+
     /**
      * normalize the vector
      * @return return the vector normalized

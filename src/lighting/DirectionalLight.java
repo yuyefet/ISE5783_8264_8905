@@ -4,6 +4,8 @@ import primitives.Color;
 import primitives.Vector;
 import primitives.Point;
 
+import java.util.List;
+
 /**
  * Class Directional Light
  * a bright light with direction
@@ -22,16 +24,6 @@ public class DirectionalLight extends Light implements LightSource{
         this.direction = direction.normalize();
     }
 
-    /**
-     * @param numOfPoints The number of points to generate
-     * @param reference   The reference point
-     * @return
-     */
-    @Override
-    public Point[] getPoints(int numOfPoints, Point reference) {
-        return null;
-    }
-
     @Override
     public Color getIntensity(Point p) {
         return this.getIntensity();
@@ -45,6 +37,12 @@ public class DirectionalLight extends Light implements LightSource{
     @Override
     public double getDistance(Point point) {
         return Double.POSITIVE_INFINITY;
+    }
+
+    @Override
+    public List<Vector> getLightVector(Point p,int numOfPoint) {
+        //TODO not implemented yet
+        return null;
     }
 
 

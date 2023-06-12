@@ -1,9 +1,12 @@
 package lighting;
 
 import primitives.Color;
+import geometries.Plane;
 import primitives.Point;
 import primitives.Vector;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -23,12 +26,9 @@ public class PointLight extends Light implements LightSource{
     /**
      * The light's size
      */
-    private double size = 0;
+    private double radius = 10;
 
-    /**
-     * Array of points - to illustrate a bigger lightSource
-     */
-    protected Point[] points;
+    private Point[] points;
 
 
     private Point position;
@@ -81,61 +81,14 @@ public class PointLight extends Light implements LightSource{
     /**
      * Sets the size of the array of points
      *
-     * @param size Size of the array
+     * @param radius Size of the array
      * @return Point light with array of point - builder pattern
      */
-    public PointLight setSize(double size) {
+    public PointLight setRadius(double radius) {
         // If size > 0 : SoftShadowing
-        this.size = size;
+        this.radius = radius;
         return this;
     }
-
-    /**
-     * Get the array of points that will cast shadow rays.
-     *
-     * @param reference           The reference point
-     * @param numOfPoints The number of points to generate
-     * @return The array of points
-     */
-    @Override
-    public Point[] getPoints(int numOfPoints, Point reference) {
-        // If size is zero, return null
-        if (size == 0)
-            return null;
-
-        // If points are already generated, return them
-        if (this.points != null)
-            return this.points;
-
-        Point[] points = new Point[numOfPoints];
-        Vector to = reference.subtract(position).normalize();
-        Vector vX = to.getOrthogonal().normalize();
-        Vector vY = vX.crossProduct(to).normalize();
-        double x, y, radius;
-
-        // Generate points in sets of 4
-        for (int i = 0; i < numOfPoints; i += 4)
-        {
-            // Calculate random radius and x-coordinate within the radius
-            radius = rand.nextDouble(size) + 0.1;
-            x = rand.nextDouble(radius) + 0.1;
-
-            // Calculate y-coordinate using the equation of a circle
-            y = radius * radius - x * x;
-
-            // Generate the 4 mirrored points
-            for (int j = 0; j < 4; j++)
-            {
-                // mirroring the point 4 times, for each quarter of the grid
-                points[i + j] = position.add(vX.scale(j % 2 == 0 ? x : -x)).add(vY.scale((j <= 1 ? -y : y)));
-            }
-        }
-
-        this.points = points;
-        return points;
-    }
-
-
 
     @Override
     public Color getIntensity(Point p) {
@@ -152,4 +105,32 @@ public class PointLight extends Light implements LightSource{
     public double getDistance(Point point) {
         return this.position.distance(point);
     }
+
+    @Override
+    public List<Vector> getLightVector(Point p, int numOfPoint) {
+            // if the size is zero that's means that there is one point light only
+            if(radius ==0)
+                return List.of(getL(p));
+
+            List<Vector> vectorsLights= new LinkedList<>();
+            Vector mainLight= getL(p);
+
+            Plane plane = new Plane(this.position,mainLight.scale(-1));
+
+            List<Vector> vectorsPlane = plane.findVectorsPlanes();
+
+            List<Point> points = Point.getRandomPoints(vectorsPlane.get(0),vectorsPlane.get(1),numOfPoint,position, radius);
+
+            for(int i =0;i<points.size()&& i<numOfPoint;i++){
+                vectorsLights.add(p.subtract(points.get(i)));
+            }
+
+            vectorsLights.add(mainLight);
+
+            return vectorsLights;
+
+
+    }
+
+
 }

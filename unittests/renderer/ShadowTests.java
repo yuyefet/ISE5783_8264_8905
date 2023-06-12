@@ -142,19 +142,31 @@ public class ShadowTests {
     @Test
     public void MiniProject_1_SoftShadows()
     {
-        scene.getLights().add(
-                new PointLight(new Color(400, 240, 0), new Point(-100, -100, 200)).setkL(1E-5).setkQ(1.5E-7));
+        scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
 
-        camera.setRayTracerBase(new RayTracerBasic(scene).setNumberOfPoints(8000));
-        sphereTriangleHelper("SoftShadowTest", //
-                new Triangle(new Point(-62, -32, 0), new Point(-32, -62, 0), new Point(-60, -60, -4)), //
-                new Point(-100, -100, 200));
+        scene.getGeometries().add( //
+                new Triangle(new Point(-150, -150, -115), new Point(150, -150, -135),
+                        new Point(75, 75, -150)) //
+                        .setMaterial(new Material().setkS(0.8).setnShininess(60)), //
+                new Triangle(new Point(-150, -150, -115), new Point(-70, 70, -140), new Point(75, 75, -150)) //
+                        .setMaterial(new Material().setkS(0.8).setnShininess(60)), //
+                new Sphere(30d, new Point(0, 0, -11)) //
+                        .setEmission(new Color(BLUE)) //
+                        .setMaterial(new Material().setkD(0.5).setkD(0.5).setnShininess(30)) //
+        );
+        scene.getLights().add( //
+                new SpotLight(new Color(700, 400, 400), new Point(40, 40, 115), new Vector(-1, -1, -4)) //
+                        .setkL(4E-4).setkQ(2E-5));
+
+        camera.setRayTracerBase(new RayTracerBasic(scene).setNumberOfPoints(100));
+        camera.setImageWriter(new ImageWriter("SoftShadowTest", 600, 600)) //
+                .renderImage() //
+                .writeToImage();
 
         camera.setRayTracerBase(new RayTracerBasic(scene).setNumberOfPoints(0));
-        sphereTriangleHelper("SoftShadowTest_checkNoSoft", //
-                new Triangle(new Point(-62, -32, 0), new Point(-32, -62, 0), new Point(-60, -60, -4)), //
-                new Point(-100, -100, 200));
-
+        camera.setImageWriter(new ImageWriter("SoftShadowTest_checkNoSoft", 600, 600)) //
+                .renderImage() //
+                .writeToImage();
     }
 
 

@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -102,6 +104,21 @@ public class Point {
 
     public  double getZ(){
         return  xyz.d3;
+    }
+
+    public static List<Point> getRandomPoints(Vector u, Vector v, int numPoints, Point center, double radius )
+    {
+        List<Point> points= new LinkedList<>();
+        double angleIncrement = 2 * Math.PI / numPoints;
+        for (int i = 0; i < numPoints; i++) {
+            double angle = i * angleIncrement;
+            double x = center.getX() + radius * (Math.cos(angle) * u.getX() + Math.sin(angle) * v.getX());
+            double y = center.getY() + radius * (Math.cos(angle) * u.getY() + Math.sin(angle) * v.getY());
+            double z = center.getZ() + radius * (Math.cos(angle) * u.getZ() + Math.sin(angle) * v.getZ());
+            points.add(new Point(x, y, z));
+        }
+        return points;
+
     }
 
 }

@@ -101,4 +101,14 @@ public class Plane extends Geometry {
         return t > 0 && alignZero(t-maxDistance)<=0 ?  List.of(new GeoPoint(this, ray.GetPoint(t))) : null;
     }
 
+    public List<Vector> findVectorsPlanes()
+    {
+        Vector v1 = new Vector(-normal.getY(), normal.getX(), 0);
+        if (v1.length() < 1e-6) {
+            v1 = new Vector(0, -normal.getZ(), normal.getY());
+        }
+        Vector v2 = normal.crossProduct(v1);
+        return List.of(v1,v2);
+    }
+
 }

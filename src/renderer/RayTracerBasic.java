@@ -100,7 +100,7 @@ public class RayTracerBasic extends RayTracerBase {
         Color color = geoPoint.geometry.getEmission();
         for (LightSource lightSource : scene.getLights()) {
 
-            /////////////////////////////////
+            ////////////// SOFT SHADOW ///////////////////
             List<Vector> vectorsLight = lightSource.getLightVector(geoPoint.point,numberOfPoints);
             Double3 ktr = Double3.ZERO;
 
@@ -116,7 +116,7 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(geoPoint.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sing(nv)
-               ktr= ktr.scale(((numberOfPoints==0)?1:((double)1/numberOfPoints)));//Double3 ktr= calculateHitColorPercentage(lightSource, geoPoint, n, l, nl, nv);//transparency(geoPoint,l,n,lightSource,nv);
+               ktr= ktr.scale(((numberOfPoints==0)?1:((double)1/numberOfPoints)));
 
                if(!(ktr.product(k).lowerThan(MIN_CALC_COLOR_K))) {
                    Color intensity = lightSource.getIntensity(geoPoint.point).scale(ktr);

@@ -106,6 +106,13 @@ public class PointLight extends Light implements LightSource{
         return this.position.distance(point);
     }
 
+    /***
+     * give us the different vectors light that we need to create a soft shadow
+     * @param p from the point that is a hit
+     * @param numOfPoint number of point that we want
+     * @return the list of all vectors
+     */
+
     @Override
     public List<Vector> getLightVector(Point p, int numOfPoint) {
             // if the size is zero that's means that there is one point light only

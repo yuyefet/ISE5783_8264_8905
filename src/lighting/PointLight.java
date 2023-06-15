@@ -106,38 +106,41 @@ public class PointLight extends Light implements LightSource{
         return this.position.distance(point);
     }
 
-    /***
-     * give us the different vectors light that we need to create a soft shadow
-     * @param p from the point that is a hit
-     * @param numOfPoint number of point that we want
-     * @return the list of all vectors
+    /**
+     * Retrieves the necessary light vectors for creating soft shadows.
+     *
+     * @param p The point of intersection.
+     * @param numOfPoint The number of desired light vectors.
+     * @return The list of light vectors.
      */
-
     @Override
     public List<Vector> getLightVector(Point p, int numOfPoint) {
-            // if the size is zero that's means that there is one point light only
-            if(radius ==0)
-                return List.of(getL(p));
+        // If the radius is zero, it means there is only one point light.
+        if (radius == 0)
+            return List.of(getL(p));
 
-            List<Vector> vectorsLights= new LinkedList<>();
-            Vector mainLight= getL(p);
+        List<Vector> vectorsLights = new LinkedList<>();
+        Vector mainLight = getL(p);
 
-            Plane plane = new Plane(this.position,mainLight.scale(-1));
+        // Create a plane perpendicular to the main light vector.
+        Plane plane = new Plane(this.position, mainLight.scale(-1));
 
-            List<Vector> vectorsPlane = plane.findVectorsPlanes();
+        // Find vectors on the plane.
+        List<Vector> vectorsPlane = plane.findVectorsPlanes();
 
-            List<Point> points = Point.getRandomPoints(vectorsPlane.get(0),vectorsPlane.get(1),numOfPoint,position, radius);
+        // Generate random points on the plane.
+        List<Point> points = Point.getPoints(vectorsPlane.get(0), vectorsPlane.get(1), numOfPoint, position, radius);
 
-            for(int i =0;i<points.size()&& i<numOfPoint;i++){
-                vectorsLights.add(p.subtract(points.get(i)));
-            }
+        // Calculate the light vectors by subtracting the generated points from the intersection point.
+        for (int i = 0; i < points.size() && i < numOfPoint; i++) {
+            vectorsLights.add(p.subtract(points.get(i)));
+        }
 
-            vectorsLights.add(mainLight);
+        vectorsLights.add(mainLight);
 
-            return vectorsLights;
-
-
+        return vectorsLights;
     }
+
 
 
 }

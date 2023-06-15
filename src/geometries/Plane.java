@@ -101,14 +101,27 @@ public class Plane extends Geometry {
         return t > 0 && alignZero(t-maxDistance)<=0 ?  List.of(new GeoPoint(this, ray.GetPoint(t))) : null;
     }
 
-    public List<Vector> findVectorsPlanes()
-    {
+    /**
+     * Finds two vectors that lie on the plane defined by the normal vector.
+     *
+     * @return A list containing two vectors that lie on the plane.
+     */
+    public List<Vector> findVectorsPlanes() {
+        // Calculate the first vector that lies on the plane.
         Vector v1 = new Vector(-normal.getY(), normal.getX(), 0);
+
+        // Check if the magnitude of v1 is very small (close to zero).
         if (v1.length() < 1e-6) {
+            // If v1 is close to zero, calculate an alternative vector.
             v1 = new Vector(0, -normal.getZ(), normal.getY());
         }
+
+        // Calculate the second vector by taking the cross product of the normal and v1.
         Vector v2 = normal.crossProduct(v1);
-        return List.of(v1,v2);
+
+        // Return the list of the two vectors that lie on the plane.
+        return List.of(v1, v2);
     }
+
 
 }

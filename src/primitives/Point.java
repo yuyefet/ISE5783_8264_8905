@@ -106,10 +106,21 @@ public class Point {
         return  xyz.d3;
     }
 
-    public static List<Point> getRandomPoints(Vector u, Vector v, int numPoints, Point center, double radius )
-    {
-        List<Point> points= new LinkedList<>();
+    /**
+     * Generates a list of points within a given plane.
+     *
+     * @param u         The first vector defining the plane.
+     * @param v         The second vector defining the plane.
+     * @param numPoints The number of points to generate.
+     * @param center    The center point of the plane.
+     * @param radius    The radius of the plane.
+     * @return A list of points within the plane.
+     */
+    public static List<Point> getPoints(Vector u, Vector v, int numPoints, Point center, double radius) {
+        List<Point> points = new LinkedList<>();
         double angleIncrement = 2 * Math.PI / numPoints;
+
+        // Generate points within the plane.
         for (int i = 0; i < numPoints; i++) {
             double angle = i * angleIncrement;
             double x = center.getX() + radius * (Math.cos(angle) * u.getX() + Math.sin(angle) * v.getX());
@@ -117,8 +128,9 @@ public class Point {
             double z = center.getZ() + radius * (Math.cos(angle) * u.getZ() + Math.sin(angle) * v.getZ());
             points.add(new Point(x, y, z));
         }
-        return points;
 
+        return points;
     }
+
 
 }

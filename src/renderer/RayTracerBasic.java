@@ -84,49 +84,85 @@ public class RayTracerBasic extends RayTracerBase {
 
 
     /**
-     * Calculates the color of a point on a geometry, by calculating the color of the light sources that affect it
+     * Calculates the color of a point on a geometry by considering the contribution of light sources that affect it.
      *
-     * @param geoPoint The point on the geometry that the ray intersects with.
-     * @param ray      the ray that intersects the geometry
-     * @param k
+     * @param geoPoint The point on the geometry where the ray intersects.
+     * @param ray The ray that intersects the geometry.
+     * @param k The attenuation factor.
      * @return The color of the point.
      */
-    private Color calcLocalEffects(GeoPoint geoPoint, Ray ray,Double3 k) {
+    private Color calcLocalEffects(GeoPoint geoPoint, Ray ray, Double3 k) {
         Vector v = ray.getDir();
         Vector n = geoPoint.geometry.getNormal(geoPoint.point);
         double nv = alignZero(n.dotProduct(v));
-        if (nv == 0) return Color.BLACK;
+
+        // If the dot product of the normal and view direction is zero, return black.
+        if (nv == 0)
+            return Color.BLACK;
+
         Material material = geoPoint.geometry.getMaterial();
         Color color = geoPoint.geometry.getEmission();
+
         for (LightSource lightSource : scene.getLights()) {
 
-            ////////////// SOFT SHADOW ///////////////////
-            List<Vector> vectorsLight = lightSource.getLightVector(geoPoint.point,numberOfPoints);
+            // Soft Shadows: Calculate light vectors from the light source.
+            List<Vector> vectorsLight = lightSource.getLightVector(geoPoint.point, numberOfPoints);
+
+            // Calculate transparency factor for soft shadows.
             Double3 ktr = Double3.ZERO;
 
-            for(Vector light : vectorsLight)
-            {
-                double nl = alignZero(n.dotProduct(light));
+            // Iterate over the light vectors.
+            ktr = calculateTransparencyFactor(geoPoint, vectorsLight, n, nv, lightSource);
 
-                if(nl*nv >0) {
-                    ktr = ktr.add(transparency(geoPoint,light,n,lightSource,nl));
-                }
-            }
-            ///////////////////////////////////
             Vector l = lightSource.getL(geoPoint.point);
             double nl = alignZero(n.dotProduct(l));
-            if (nl * nv > 0) { // sign(nl) == sing(nv)
-               ktr= ktr.scale(((numberOfPoints==0)?1:((double)1/numberOfPoints)));
 
-               if(!(ktr.product(k).lowerThan(MIN_CALC_COLOR_K))) {
-                   Color intensity = lightSource.getIntensity(geoPoint.point).scale(ktr);
-                   color = color.add(intensity.scale(calcDiffusive(material.kD, nl)),
-                           intensity.scale(calcSpecular(material, l, n, v)));
-               }
+            if (nl * nv > 0) { // sign(nl) == sign(nv)
+                // Scale the transparency factor by the number of light vectors used.
+                ktr = ktr.scale(((numberOfPoints == 0 || vectorsLight.size() == 1) ? 1 : ((double) 1 / numberOfPoints)));
+
+                // Check if the accumulated transparency factor is above the minimum threshold.
+                if (!(ktr.product(k).lowerThan(MIN_CALC_COLOR_K))) {
+                    // Calculate the light intensity and add the diffuse and specular components to the color.
+                    Color intensity = lightSource.getIntensity(geoPoint.point).scale(ktr);
+                    color = color.add(intensity.scale(calcDiffusive(material.kD, nl)),
+                            intensity.scale(calcSpecular(material, l, n, v)));
+                }
             }
         }
+
         return color;
     }
+
+    /**
+     * Calculates the accumulated transparency factor based on the given light vectors.
+     *
+     * @param geoPoint     The point on the geometry.
+     * @param vectorsLight The list of light vectors.
+     * @param n            The surface normal.
+     * @param nv           The dot product of the normal and view direction.
+     * @param lightSource  The light source affecting the point.
+     * @return The accumulated transparency factor.
+     */
+    private Double3 calculateTransparencyFactor(GeoPoint geoPoint, List<Vector> vectorsLight, Vector n, double nv, LightSource lightSource) {
+        Double3 ktr = Double3.ZERO;
+
+        if(vectorsLight == null)
+            return ktr;
+
+        // Iterate over the light vectors.
+        for (Vector light : vectorsLight) {
+            double nl = alignZero(n.dotProduct(light));
+
+            if (nl * nv > 0) {
+                // Accumulate the transparency factor.
+                ktr = ktr.add(transparency(geoPoint, light, n, lightSource, nl));
+            }
+        }
+
+        return ktr;
+    }
+
 
     /**
      * Calculates the color of the point by calculating the color of the reflected and refracted rays.
